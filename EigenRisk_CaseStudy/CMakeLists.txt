@@ -1,0 +1,24 @@
+﻿# CMakeList.txt : CMake project for EigenRisk_CaseStudy, include source and define
+# project specific logic here.
+#
+cmake_minimum_required (VERSION 3.8)
+
+# Enable Hot Reload for MSVC compilers if supported.
+if (POLICY CMP0141)
+  cmake_policy(SET CMP0141 NEW)
+  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
+endif()
+
+project ("EigenRisk_CaseStudy")
+
+# Add source to this project's executable.
+add_executable (EigenRisk_CaseStudy "EigenRisk_CaseStudy.cpp" "Importer.cpp" "Validator.cpp" "CarSale.cpp" "HashUtils.hpp")
+if (CMAKE_VERSION VERSION_GREATER 3.12)
+  set_property(TARGET EigenRisk_CaseStudy PROPERTY CXX_STANDARD 20)
+endif()
+set(DATA_FILE "D:/Projects/EigenRisk_CaseStudy/data/world_car_sales_1m.csv")
+set_target_properties(EigenRisk_CaseStudy
+    PROPERTIES
+        VS_DEBUGGER_COMMAND_ARGUMENTS "${DATA_FILE}"
+)
+# TODO: Add tests and install targets if needed.
