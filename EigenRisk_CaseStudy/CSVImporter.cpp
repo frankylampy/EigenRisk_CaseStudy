@@ -120,10 +120,10 @@ void CSVImporter::GenerateDataMaps(const std::unique_ptr<CarSale>& sale) {
         sale->manufacturer, sale->vehicle_year);
     incrementCounter(m_makeYearRevenue.get(), makeYearRevenueKey, sale->sale_price_usd);
 
-    MakeRegionPair MakeRegionKey = std::make_pair(sale->Make, sale->region);
+    MakeRegionPair MakeRegionKey = std::make_pair(sale->manufacturer, sale->region);
     incrementCounter(m_makeRegionCount.get(), MakeRegionKey);
 
-    MakeCountryPair MakeCountryKey = std::make_pair(sale->Make, sale->country);
+    MakeCountryPair MakeCountryKey = std::make_pair(sale->manufacturer, sale->country);
     incrementCounter(m_makeCountryCount.get(), MakeCountryKey);
 
     m_uniqueYears->insert(static_cast<int>(sale->sale_date.year()));

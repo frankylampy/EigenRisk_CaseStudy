@@ -18,10 +18,13 @@ typedef std::tuple<std::string, std::string, int> MakeCountryYearTuple;  // Make
 typedef std::pair<std::string, int> MakeYearRevenuePair; // Make, Yearly Revenue
 typedef std::pair<std::string, std::string> MakeRegionPair; // Make, Region
 typedef std::pair<std::string, std::string> MakeCountryPair; // Make, Country
+//typedef std::pair<std::string, double> CountryRevenuePair; // Country, Revenue
+//typedef std::pair<std::string, CountryRevenuePair> RegionCountryRevenuePair; // Make, Country
 typedef std::unordered_map<MakeCountryYearTuple, int, TupleHash<std::string, std::string, int>> MakeCountryYearTupleMap;
 typedef std::unordered_map<MakeYearRevenuePair, double, PairHash<std::string, double>> MakeYearRevenuePairMap;
 typedef std::unordered_map<MakeRegionPair, int, PairHash<std::string, std::string>> MakeRegionPairMap;
 typedef std::unordered_map<MakeCountryPair, int, PairHash<std::string, std::string>> MakeCountryPairMap;
+//typedef std::unordered_map<RegionCountryRevenuePair, std::unordered_map<>> MakeCountryPairMap;
 
 typedef enum {
 	LOG_FILE,
@@ -49,8 +52,9 @@ public:
 	virtual void readFile() = 0;
 	virtual void fetchData() = 0;
 
-	size_t ProcessMakeCountryYearQuery(const std::string& make, const std::string& country, int year) const;
+	int64_t ProcessMakeCountryYearQuery(const std::string& make, const std::string& country, int year) const;
 	long ProcessMakeYearRevenueQuery(const std::string& make, int year) const;
+	int64_t ProcessMakeRegionYearQuery(const std::string& make, const std::string& region, int year) const;
 
 private:
 	void ValidateMake(const std::string& make) const;

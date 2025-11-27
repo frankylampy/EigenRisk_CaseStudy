@@ -141,12 +141,13 @@ void QueryProcessor::ProcessMakeRegionYearQuery(Importer* importer)
 	std::string region;
 	int year(0);
 	std::cout << "Enter Make,Region,Year to fetch sales data by countries (e.g. Audi,Asia,2025): ";
-	//fetchMakeCountryYear(make, year, &region);
-	//int64_t count = 0;// importer->ProcessMakeRegionYearQuery(make, year);
-	//if (count < 0) {
-	//	//Query did not return valid data
-	//	std::cout << "\n NO DATA FOUND \n";
-	//	return;
-	//}
-	//printf("\nRevenue (in USD) by %s in the year %d: $%ld\n", make.c_str(), year, count);
+	fetchMakeCountryYear(make, year, &region);
+	int64_t count =  importer->ProcessMakeRegionYearQuery(make, region, year);
+	if (count < 0) {
+		//Query did not return valid data
+		std::cout << "\n NO DATA FOUND \n";
+		return;
+	}
+
+	printf("\nNumber of cars sold by %s in %s in the year %d: %lld\n", make.c_str(), region.c_str(), year, count);
 }

@@ -1,6 +1,6 @@
 #include "Importer.hpp"
 
-size_t Importer::ProcessMakeCountryYearQuery(const std::string& make, const std::string& country, int year) const {
+int64_t Importer::ProcessMakeCountryYearQuery(const std::string& make, const std::string& country, int year) const {
 	//Validate input query parameters
 	ValidateMake(make);
 	ValidateCountry(country);
@@ -17,13 +17,31 @@ size_t Importer::ProcessMakeCountryYearQuery(const std::string& make, const std:
 
 long Importer::ProcessMakeYearRevenueQuery(const std::string& make, int year) const
 {
+	//Validate input query parameters
 	ValidateMake(make);
 	ValidateYear(year);
+
 	// Lookup in the map
 	MakeYearRevenuePair key = std::make_pair(make, year);
 	auto it = m_makeYearRevenue->find(key);
 	if (it != m_makeYearRevenue->end()) {
 		return static_cast<long>(it->second);
+	}
+	return -1;
+}
+
+int64_t Importer::ProcessMakeRegionYearQuery(const std::string& make, const std::string& region, int year) const
+{
+	//Validate input query parameters
+	ValidateMake(make);
+	ValidateRegion(region);
+	ValidateYear(year);
+
+	// Lookup in the map
+	MakeRegionPair key = std::make_pair(make, region);
+	auto it = m_makeRegionCount->find(key);
+	if (it != m_makeRegionCount->end()) {
+		return it->second;
 	}
 	return -1;
 }
