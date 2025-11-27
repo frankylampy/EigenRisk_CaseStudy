@@ -47,7 +47,7 @@ static QueryType chooseQuery() {
 	int InvalidInputCount = 1;
 	while (true)
 	{
-		std::cout << "Enter your choice (0-3): ";
+		std::cout << "\nEnter your choice (0-3): ";
 
 		if (std::cin >> choice && choice >= 0 && choice <= 3)
 		{
@@ -105,7 +105,7 @@ void QueryProcessor::ProcessMakeCountryYearQuery(const Importer* importer)
 	std::string make;
 	std::string country;
 	int year(0);
-	std::cout << "Enter Manufacturer,Country,Year to fetch sales data (e.g. Audi,China,2025): ";
+	std::cout << "\nEnter Manufacturer,Country,Year to fetch sales data (e.g. Audi,China,2025): ";
 	fetchMakeCountryYear(make,year,&country);
 
 	int64_t count = importer->ProcessMakeCountryYearQuery(make,country,year);
@@ -122,7 +122,7 @@ void QueryProcessor::ProcessMakeYearRevenueQuery(const Importer* importer)
 {
 	std::string make;
 	int year(0);
-	std::cout << "Enter Manufacturer,Year to fetch Revenue data (e.g. Audi,2025): ";
+	std::cout << "\nEnter Manufacturer,Year to fetch Revenue data (e.g. Audi,2025): ";
 	fetchMakeCountryYear(make, year);
 
 	long count = importer->ProcessMakeYearRevenueQuery(make,year);
@@ -140,7 +140,7 @@ void QueryProcessor::ProcessMakeRegionRevenueYearQuery(const Importer* importer)
 	std::string make;
 	std::string region;
 	int year(0);
-	std::cout << "Enter Manufacturer,Region,Year to Revenue sales data sorted by countries (e.g. Audi,Asia,2025): ";
+	std::cout << "\nEnter Manufacturer,Region,Year to Revenue sales data sorted by countries (e.g. Audi,Asia,2025): ";
 	fetchMakeCountryYear(make, year, &region);
 	StringDoublePairVector regionRevenueData;
 	int64_t count =  importer->ProcessMakeRegionRevenueYearQuery(make, region, year, regionRevenueData);
