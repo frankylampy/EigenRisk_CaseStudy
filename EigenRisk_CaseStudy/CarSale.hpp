@@ -17,7 +17,7 @@ enum class CarSaleField {
     DEALERSHIP_ID,
     DEALERSHIP_NAME,
     MANUFACTURER,
-    MODEL,
+    Make,
     VEHICLE_YEAR,
     BODY_TYPE,
     FUEL_TYPE,
@@ -64,7 +64,7 @@ struct CarSale {
     std::string dealership_id;
     std::string dealership_name;
     std::string manufacturer;
-    std::string model;
+    std::string Make;
     int vehicle_year;
     std::string body_type;
     std::string fuel_type;
@@ -98,8 +98,6 @@ struct CarSale {
     double dealer_rating;
     std::string condition_notes;
     std::string service_history;
-
-    
 };
 
 

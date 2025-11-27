@@ -6,6 +6,9 @@
 #include <vector>
 using namespace std;
 
+
+
+
 int main(int argc, char* argv[])
 {
 	// Validate input arguments
@@ -17,17 +20,38 @@ int main(int argc, char* argv[])
 		cerr << "Error: " << e.what() << endl;
 		return 1;
 	}*/
-	std::string fExtension(".csv");
+	std::string fExtension("csv");
 	std::string fName("../../../data/world_car_sales_1m.csv");
-	std::unique_ptr<Importer> importer = std::make_unique<Importer>(fName, fExtension);
-	//std::unique_ptr<Importer> importer = std::make_unique<Importer>(argv[1], fExtension);
+	std::unique_ptr<Importer> importer;
+	// Create appropriate importer based on file extension (can be extended for other file types)
+	if (FileFormatMap.at(fExtension) == FileType::CSV_FILE)
+	{
+		importer = std::make_unique<CSVImporter>(fName);
+	}
+	else if (FileFormatMap.at(fExtension) == FileType::TXT_FILE)
+	{
+		// importer = std::make_unique<TXTImporter>(fName); - Placeholder for future TXTImporter
+	}
+	else if (FileFormatMap.at(fExtension) == FileType::LOG_FILE)
+	{
+		// importer = std::make_unique<LOGImporter>(fName); - Placeholder for future LOGImporter
+	}
+
+	
 	try {
-		importer->openFile();
+		// Read and process the file
+		importer->readFile();
+		// Show basic data stats
+		importer->fetchData();
+
+		// Run Query Processor
+		QueryProcessor::Run(importer.get());
 	}
 	catch (const std::runtime_error& e) {
 		cerr << "Error: " << e.what() << endl;
 		return 1;
 	}
-	//cout << "Hello CMake." << endl;
+
+
 	return 0;
 }

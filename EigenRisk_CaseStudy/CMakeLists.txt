@@ -12,7 +12,7 @@ endif()
 project ("EigenRisk_CaseStudy")
 
 # Add source to this project's executable.
-add_executable (EigenRisk_CaseStudy "EigenRisk_CaseStudy.cpp" "Importer.cpp" "Validator.cpp" "CarSale.cpp" "HashUtils.hpp")
+add_executable (EigenRisk_CaseStudy "EigenRisk_CaseStudy.cpp" "Importer.cpp" "Validator.cpp" "CarSale.cpp" "HashUtils.hpp" "CSVImporter.cpp" "QueryProcessor.cpp")
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET EigenRisk_CaseStudy PROPERTY CXX_STANDARD 20)
 endif()

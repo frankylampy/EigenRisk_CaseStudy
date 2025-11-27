@@ -8,10 +8,10 @@ std::unique_ptr<CarSale> parseCarSale(const std::string& line) {
     int index = 0;
     while (std::getline(ss, cell, ',')) {
         switch ((CarSaleField)index) {
-        case CarSaleField::SALE_ID:
+        /*case CarSaleField::SALE_ID:
             sale->sale_id = cell;
             break;
-
+        */
         case CarSaleField::SALE_DATE: {
             std::istringstream date_ss(cell);
             int year;
@@ -54,8 +54,8 @@ std::unique_ptr<CarSale> parseCarSale(const std::string& line) {
             sale->manufacturer = cell;
             break;
 
-        case CarSaleField::MODEL:
-            sale->model = cell;
+        case CarSaleField::Make:
+            sale->Make = cell;
             break;
 
         case CarSaleField::VEHICLE_YEAR:
@@ -82,12 +82,12 @@ std::unique_ptr<CarSale> parseCarSale(const std::string& line) {
        
         ++index;
     }
-	/*ModelCountryYearTuple modelCountryYearKey = std::make_tuple(
-		sale->model, sale->country, sale->vehicle_year);
-	ModelYearRevenueTuple modelYearRevenueKey = std::make_tuple(
-		sale->model, sale->vehicle_year, sale->sale_price_usd);
-	ModelRegionPair modelRegionKey = std::make_pair(sale->model, sale->region);
-	ModelCountryPair modelCountryKey = std::make_pair(sale->model, sale->region);*/
+	/*MakeCountryYearTuple MakeCountryYearKey = std::make_tuple(
+		sale->Make, sale->country, sale->vehicle_year);
+	MakeYearRevenueTuple makeYearRevenueKey = std::make_tuple(
+		sale->Make, sale->vehicle_year, sale->sale_price_usd);
+	MakeRegionPair MakeRegionKey = std::make_pair(sale->Make, sale->region);
+	MakeCountryPair MakeCountryKey = std::make_pair(sale->Make, sale->region);*/
 
     return std::move(sale);
 }
