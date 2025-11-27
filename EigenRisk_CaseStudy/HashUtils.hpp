@@ -3,6 +3,10 @@
 #include <utility>
 #include <string>
 #include <functional>
+#include <map>
+#include <vector>
+#include <algorithm>
+#include <iostream>
 
 // ---------------------------------------------------------
 //  Generic hash combine (similar to boost::hash_combine)
@@ -86,3 +90,25 @@ void incrementCounter(Map* map, const Key& key, const Value& amount)
     }
 }
 
+template<typename Map>
+auto sortMapByValue(const Map& m, const bool desc = false) {
+    using K = typename Map::key_type;
+    using V = typename Map::mapped_type;
+
+    std::vector<std::pair<K, V>> vec(m.begin(), m.end());
+    std::sort(vec.begin(), vec.end(),
+        [desc](auto& a, auto& b) {
+			return desc ? a.second > b.second :
+                a.second < b.second;
+        });
+    return vec;
+}
+
+template<typename PairVec>
+void printStringDoublePairVector(const PairVec& vec)
+{
+    for (const auto& [str, val] : vec) {
+        std::cout << str << " : $ " << val << "\n";
+    }
+    std::cout << std::endl;
+}

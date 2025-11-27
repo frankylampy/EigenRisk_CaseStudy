@@ -24,8 +24,8 @@ static void fetchMakeCountryYear(std::string& make,int& year, std::string* count
 				year = std::stoi(entry);
 				break;
 			}
-			catch(...){
-				// Ignore errors
+			catch(...) {
+				// Ignore errors				
 				}
 		default:
 			//Ignore additional inputs if any
@@ -39,9 +39,9 @@ static QueryType chooseQuery() {
 
 	std::cout << "\nChoose a query to execute:\n";
 	std::cout << "\t0: Exit\n";
-	std::cout << "\t1: Make-Country-Year\n";
-	std::cout << "\t2: Make-Revenue-Year\n";
-	std::cout << "\t3: Make-Region-Year\n";
+	std::cout << "\t1: Manufacturer-Country-Year Sales\n";
+	std::cout << "\t2: Manufacturer-Region-Year Revenue\n";
+	std::cout << "\t3: Manufacturer-Year Revenue\n";
 
 	int choice = -1;
 	int InvalidInputCount = 1;
@@ -62,14 +62,14 @@ static QueryType chooseQuery() {
 				InvalidInputCount++;
 			}
 			else {
-				std::cout << "Too many invalid attempts. Exiting.\n";
+				std::cout << "\nToo many invalid attempts. Exiting.\n";
 				return QueryType::Exit;
 			}
 		}
 	}
 }
 
-void QueryProcessor::Run(Importer* importer)
+void QueryProcessor::Run(const Importer* importer)
 {
     QueryType query = chooseQuery();
 
@@ -77,35 +77,35 @@ void QueryProcessor::Run(Importer* importer)
     {
         switch (query)
         {
-        case QueryType::MakeCountryYear:
+        case QueryType::MakeCountryYearSales:
             ProcessMakeCountryYearQuery(importer);
             break;
 
-        case QueryType::MakeRevenueYear:
+		case QueryType::MakeRegionYearRevenue:
             ProcessMakeRevenueYearQuery(importer);
             break;
 
-        case QueryType::MakeRegionYear:
-            ProcessMakeRegionYearQuery(importer);
+		case QueryType::MakeRegionYearSales:
+            ProcessMakeRegionRevenueYearQuery(importer);
             break;
 
         default:
-            std::cout << "Invalid query type selected.\n";
+            std::cout << "\nInvalid query type selected.\n";
             break;
         }
-
+		std::cout <<"\n-------- QUERY COMPLETE --------\n";
         query = chooseQuery();    // continue until Exit
     }
 
-    std::cout << "Exiting Query Processor...\n";
+    std::cout << "Exiting...\n";
 }
 
-void QueryProcessor::ProcessMakeCountryYearQuery(Importer* importer)
+void QueryProcessor::ProcessMakeCountryYearQuery(const Importer* importer)
 {
 	std::string make;
 	std::string country;
 	int year(0);
-	std::cout << "Enter Make,Country,Year to fetch sales data (e.g. Audi,China,2025): ";
+	std::cout << "Enter Manufacturer,Country,Year to fetch sales data (e.g. Audi,China,2025): ";
 	fetchMakeCountryYear(make,year,&country);
 
 	int64_t count = importer->ProcessMakeCountryYearQuery(make,country,year);
@@ -118,11 +118,11 @@ void QueryProcessor::ProcessMakeCountryYearQuery(Importer* importer)
 	printf("\nNumber of cars sold by %s in %s in the year %d: %lld\n", make.c_str(), country.c_str(), year, count);
 }
 
-void QueryProcessor::ProcessMakeRevenueYearQuery(Importer* importer)
+void QueryProcessor::ProcessMakeRevenueYearQuery(const Importer* importer)
 {
 	std::string make;
 	int year(0);
-	std::cout << "Enter Make,Year to fetch Revenue data (e.g. Audi,2025): ";
+	std::cout << "Enter Manufacturer,Year to fetch Revenue data (e.g. Audi,2025): ";
 	fetchMakeCountryYear(make, year);
 
 	long count = importer->ProcessMakeYearRevenueQuery(make,year);
@@ -135,19 +135,20 @@ void QueryProcessor::ProcessMakeRevenueYearQuery(Importer* importer)
 	//std::cout << "Number of cars sold by " <<
 }
 
-void QueryProcessor::ProcessMakeRegionYearQuery(Importer* importer)
+void QueryProcessor::ProcessMakeRegionRevenueYearQuery(const Importer* importer)
 {
 	std::string make;
 	std::string region;
 	int year(0);
-	std::cout << "Enter Make,Region,Year to fetch sales data by countries (e.g. Audi,Asia,2025): ";
+	std::cout << "Enter Manufacturer,Region,Year to Revenue sales data sorted by countries (e.g. Audi,Asia,2025): ";
 	fetchMakeCountryYear(make, year, &region);
-	int64_t count =  importer->ProcessMakeRegionYearQuery(make, region, year);
+	StringDoublePairVector regionRevenueData;
+	int64_t count =  importer->ProcessMakeRegionRevenueYearQuery(make, region, year, regionRevenueData);
 	if (count < 0) {
 		//Query did not return valid data
 		std::cout << "\n NO DATA FOUND \n";
 		return;
 	}
-
-	printf("\nNumber of cars sold by %s in %s in the year %d: %lld\n", make.c_str(), region.c_str(), year, count);
+	printf("\nRevenue of cars sold by %s in region %s in the year %d is listed below:\n", make.c_str(), region.c_str(), year);
+	printStringDoublePairVector(regionRevenueData);
 }

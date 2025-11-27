@@ -6,17 +6,17 @@
 
 enum class QueryType {
     Exit = 0,
-    MakeCountryYear = 1,
-    MakeRevenueYear = 2,
-    MakeRegionYear = 3
+    MakeCountryYearSales = 1,
+    MakeRegionYearSales = 2,
+    MakeRegionYearRevenue = 3,
 };
 
 class QueryProcessor
 {
 public:
-    static void Run(Importer* importer);
+    static void Run(const Importer* importer);
 
-    static void ProcessMakeCountryYearQuery(Importer* importer);
-    static void ProcessMakeRevenueYearQuery(Importer* importer);
-    static void ProcessMakeRegionYearQuery(Importer* importer);
+    static void ProcessMakeCountryYearQuery(const Importer* importer);
+    static void ProcessMakeRevenueYearQuery(const Importer* importer);
+    static void ProcessMakeRegionRevenueYearQuery(const Importer* importer);
 };

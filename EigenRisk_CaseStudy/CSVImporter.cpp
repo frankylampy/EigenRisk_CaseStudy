@@ -12,11 +12,12 @@ CSVImporter::CSVImporter(const std::string& fileName) :
     Importer(fileName, FileType::CSV_FILE)
 {
     //countLines();
-    m_carSaleData = std::make_unique<CarSaleVector>();
-    m_makeCountryYearSalesCount = std::make_unique<StringStringIntTupleIntMap>();
-    m_makeCountryCount = std::make_unique<StringStringPairIntMap>();
-    m_makeRegionCount = std::make_unique<StringStringPairIntMap>();
-    m_makeYearRevenue = std::make_unique<StringIntPairDoubleMap>();
+    m_carSaleDataVec = std::make_unique<CarSaleVector>();
+    m_makeCountryYearSalesCountMap = std::make_unique<StringStringIntTupleIntMap>();
+    m_makeCountryCountMap = std::make_unique<StringStringPairIntMap>();
+    m_makeRegionCountMap = std::make_unique<StringStringPairIntMap>();
+    m_makeYearRevenueMap = std::make_unique<StringIntPairDoubleMap>();
+	m_makeRegionYearRevenueMap = std::make_unique<StringStringIntTupleStringDoubleMapPtrMap>();
 
     m_uniqueYears = std::make_unique<IntSet>();
     m_uniqueCountries = std::make_unique<StringSet>();
@@ -27,12 +28,12 @@ CSVImporter::CSVImporter(const std::string& fileName) :
 
     // Reserve space in vectors, sets and maps
     if (m_lineCount > 0) {
-        m_carSaleData->reserve(m_lineCount);
-        m_makeCountryCount->reserve(m_lineCount);
-        m_makeCountryYearSalesCount->reserve(m_lineCount);
-        m_makeRegionCount->reserve(m_lineCount);
-        m_makeYearRevenue->reserve(m_lineCount);
-
+        m_carSaleDataVec->reserve(m_lineCount);
+        m_makeCountryCountMap->reserve(m_lineCount);
+        m_makeCountryYearSalesCountMap->reserve(m_lineCount);
+        m_makeRegionCountMap->reserve(m_lineCount);
+        m_makeYearRevenueMap->reserve(m_lineCount);
+		m_makeRegionYearRevenueMap->reserve(m_lineCount);
         m_uniqueCountries->reserve(m_lineCount);
         m_uniqueRegions->reserve(m_lineCount);
         m_uniqueMakes->reserve(m_lineCount);
@@ -43,7 +44,7 @@ CSVImporter::CSVImporter(const std::string& fileName) :
 void CSVImporter::countLines() {
     std::ifstream file(m_fileName);
     size_t m_lineCount = std::count(std::istreambuf_iterator<char>(file),
-        std::istreambuf_iterator<char>(), '\n');
+		std::istreambuf_iterator<char>(), '\n') - 1; // Subtract 1 for header line
     std::cout << "Number of lines: " << m_lineCount << std::endl;
 
     /*std::filesystem::path p{ m_fileName };
@@ -55,7 +56,7 @@ void CSVImporter::countLines() {
 
 void CSVImporter::readFile()
 {
-    if (m_carSaleData == nullptr)
+    if (m_carSaleDataVec == nullptr)
     {
         throw std::runtime_error("Car sale data vector is not initialized.");
     }
@@ -88,11 +89,11 @@ void CSVImporter::readFile()
 		//std::cout << "Parsing line " << lineNumber-1 << std::endl;
         auto sale = parseCarSale(line);
         GenerateDataMaps(sale);
-        m_carSaleData->push_back(std::move(sale));
+        m_carSaleDataVec->push_back(std::move(sale));
         
     }
     
-    std::sort(m_carSaleData->begin(), m_carSaleData->end(),
+    std::sort(m_carSaleDataVec->begin(), m_carSaleDataVec->end(),
         [](const std::unique_ptr<CarSale>& a, const std::unique_ptr<CarSale>& b) {
             return std::chrono::sys_days(a->sale_date) >
                 std::chrono::sys_days(b->sale_date);
@@ -102,7 +103,7 @@ void CSVImporter::readFile()
 void CSVImporter::fetchData()
 {
 	// Implementation can be added as needed
-    std::cout << "Total car sales records imported: " << m_carSaleData->size() << std::endl;
+    std::cout << "Total car sales records imported: " << m_carSaleDataVec->size() << std::endl;
     std::cout << "Vehicle Years From " 
         << *m_uniqueYears->begin() << " To " 
 		<< *m_uniqueYears->rbegin() << std::endl;
@@ -112,19 +113,39 @@ void CSVImporter::fetchData()
 }
 
 void CSVImporter::GenerateDataMaps(const std::unique_ptr<CarSale>& sale) {
-    StringStringIntTuple MakeCountryYearKey = std::make_tuple(
-        sale->manufacturer, sale->country, static_cast<int>(sale->sale_date.year()));
-    incrementCounter(m_makeCountryYearSalesCount.get(), MakeCountryYearKey);
+    auto saleYear = static_cast<int>(sale->sale_date.year());
+    StringStringIntTuple makeCountryYearKey = std::make_tuple(
+        sale->manufacturer, sale->country, saleYear);
+
+    incrementCounter(m_makeCountryYearSalesCountMap.get(), makeCountryYearKey);
 
     StringIntPair makeYearRevenueKey = std::make_pair(
-        sale->manufacturer, sale->vehicle_year);
-    incrementCounter(m_makeYearRevenue.get(), makeYearRevenueKey, sale->sale_price_usd);
+        sale->manufacturer, saleYear);
+    incrementCounter(m_makeYearRevenueMap.get(), makeYearRevenueKey, sale->sale_price_usd);
 
-    StringStringPair MakeRegionKey = std::make_pair(sale->manufacturer, sale->region);
-    incrementCounter(m_makeRegionCount.get(), MakeRegionKey);
+    StringStringPair makeRegionKey = std::make_pair(sale->manufacturer, sale->region);
+    incrementCounter(m_makeRegionCountMap.get(), makeRegionKey);
 
-    StringStringPair MakeCountryKey = std::make_pair(sale->manufacturer, sale->country);
-    incrementCounter(m_makeCountryCount.get(), MakeCountryKey);
+    StringStringPair makeCountryKey = std::make_pair(sale->manufacturer, sale->country);
+    incrementCounter(m_makeCountryCountMap.get(), makeCountryKey);
+
+    StringStringIntTuple makeRegionYearKey = std::make_tuple(
+		sale->manufacturer, sale->region, saleYear);
+    auto it = m_makeRegionYearRevenueMap->find(makeRegionYearKey);
+    if (it == m_makeRegionYearRevenueMap->end()) {
+		auto countryRevenueMap = std::unique_ptr<StringDoubleMap>(new StringDoubleMap());
+		std::string countryKey = sale->country;
+        //countryRevenueMap->emplace(sale->country, sale->sale_price_usd);
+        incrementCounter(countryRevenueMap.get(), countryKey,sale->sale_price_usd);
+		m_makeRegionYearRevenueMap->emplace(makeRegionYearKey, countryRevenueMap.release());
+    }
+    else
+    {
+        incrementCounter(it->second, sale->country, sale->sale_price_usd);
+    }
+
+	
+    
 
     m_uniqueYears->insert(static_cast<int>(sale->sale_date.year()));
     m_uniqueCountries->insert(sale->country);
