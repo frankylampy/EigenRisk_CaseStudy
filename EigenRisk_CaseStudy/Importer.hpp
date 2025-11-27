@@ -52,8 +52,8 @@ class Importer
 public:
 	// Constructor
 	Importer(const std::string& fileName, const FileType& fType) : 
-		m_fileName(fileName), m_fileType(fType) {
-		m_lineCount = 50000;
+		m_fileName(fileName), m_fileType(fType), m_lineCount(0) {
+		
 	}
 	// DElete default/copy constructor and assignment operator
 	Importer(const Importer&) = delete;

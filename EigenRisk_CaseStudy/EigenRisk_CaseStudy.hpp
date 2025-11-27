@@ -6,8 +6,4 @@
 #define CASESTUDY_HPP
 #endif // !CASESTUDY_HPP
 
-#include <iostream>
-#include "Importer.hpp"
-#include "Validator.hpp"
-#include "QueryProcessor.hpp"
 // TODO: Reference additional headers your program requires here.

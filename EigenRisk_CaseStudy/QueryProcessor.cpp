@@ -18,7 +18,6 @@ static void fetchMakeCountryYear(std::string& make,int& year, std::string* count
 				*country = entry;
 				break;
 			}
-			
 		case 2: 
 			try {
 				year = std::stoi(entry);

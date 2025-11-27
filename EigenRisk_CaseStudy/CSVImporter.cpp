@@ -11,7 +11,9 @@
 CSVImporter::CSVImporter(const std::string& fileName) : 
     Importer(fileName, FileType::CSV_FILE)
 {
-    //countLines();
+	// Count lines in the file to allocate memory to data structures
+    countLines();
+    
     m_carSaleDataVec = std::make_unique<CarSaleVector>();
     m_makeCountryYearSalesCountMap = std::make_unique<StringStringIntTupleIntMap>();
     m_makeCountryCountMap = std::make_unique<StringStringPairIntMap>();
@@ -40,9 +42,9 @@ CSVImporter::CSVImporter(const std::string& fileName) :
     }
 }
 
-void CSVImporter::countLines() {
+void CSVImporter::countLines() {    
     std::ifstream file(m_fileName);
-    size_t m_lineCount = std::count(std::istreambuf_iterator<char>(file),
+    m_lineCount = std::count(std::istreambuf_iterator<char>(file),
 		std::istreambuf_iterator<char>(), '\n') - 1; // Subtract 1 for header line
     std::cout << "Number of lines: " << m_lineCount << std::endl;
 
