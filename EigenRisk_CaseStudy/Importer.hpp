@@ -17,6 +17,10 @@ typedef std::tuple<std::string, std::string, int> ModelCountryYearTuple;  // Mod
 typedef std::pair<std::string, int> ModelYearRevenuePair; // Model, Yearly Revenue
 typedef std::pair<std::string, std::string> ModelRegionPair; // Model, Region
 typedef std::pair<std::string, std::string> ModelCountryPair; // Model, Country
+typedef std::unordered_map<ModelCountryYearTuple, int, TupleHash<std::string, std::string, int>> ModelCountryYearTupleMap;
+typedef std::unordered_map<ModelYearRevenuePair, double, PairHash<std::string, double>> ModelYearRevenuePairMap;
+typedef std::unordered_map<ModelRegionPair, int, PairHash<std::string, std::string>> ModelRegionPairMap;
+typedef std::unordered_map<ModelCountryPair, int, PairHash<std::string, std::string>> ModelCountryPairMap;
 
 class Importer
 {
@@ -31,23 +35,16 @@ public:
 private:
 	std::string m_fileName;
 	std::string m_fileExtension;
-	int64_t m_lineCount = 0;
-	CarSaleDataVector m_carSaleData;
+	size_t m_lineCount = 0;
+	std::unique_ptr <CarSaleDataVector> m_carSaleData;
 	
 	// Private method to count lines in the file
 	void countLines();
 	void GenerateDataMaps(const std::unique_ptr<CarSale>& sale);
 	
-	std::unordered_map<ModelCountryYearTuple, int, TupleHash<std::string, std::string, int>>
-		m_modelCountryYearSalesCount;
-
-	std::unordered_map<ModelYearRevenuePair, double, PairHash<std::string, double>>
-		m_modelYearRevenue;
-
-	std::unordered_map<ModelRegionPair, int, PairHash<std::string, std::string>>
-		m_modelRegionCount;
-
-	std::unordered_map<ModelCountryPair, int, PairHash<std::string, std::string>>
-		m_modelCountryCount;
+	std::unique_ptr <ModelCountryYearTupleMap> m_modelCountryYearSalesCount;
+	std::unique_ptr<ModelYearRevenuePairMap>	m_modelYearRevenue;
+	std::unique_ptr<ModelRegionPairMap> m_modelRegionCount;
+	std::unique_ptr<ModelCountryPairMap> m_modelCountryCount;
 };
 

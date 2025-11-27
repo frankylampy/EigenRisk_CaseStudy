@@ -57,26 +57,32 @@ struct TupleHash {
 };
 
 template <typename Map, typename Key>
-void incrementCounter(Map& map, const Key& key)
+void incrementCounter(Map* map, const Key& key)
 {
-    auto it = map.find(key);
-    if (it != map.end()) {
+    if (map == nullptr)
+        return;
+
+    auto it = map->find(key);
+    if (it != map->end()) {
         it->second++;            // key exists ? increment
     }
     else {
-        map.emplace(key, 1);     // key does not exist ? insert with count = 1
+        map->emplace(key, 1);     // key does not exist ? insert with count = 1
     }
 }
 
 template <typename Map, typename Key, typename Value>
-void incrementCounter(Map& map, const Key& key, const Value& amount)
+void incrementCounter(Map* map, const Key& key, const Value& amount)
 {
-    auto it = map.find(key);
-    if (it != map.end()) {
+    if (map == nullptr)
+        return;
+
+    auto it = map->find(key);
+    if (it != map->end()) {
         it->second += amount;      // key exists → add amount
     }
     else {
-        map.emplace(key, amount);  // key does not exist → insert with amount
+        map->emplace(key, amount);  // key does not exist → insert with amount
     }
 }
 
