@@ -13,6 +13,8 @@
 #include "HashUtils.hpp"
 #include "CarSale.hpp"
 
+typedef std::set<int> IntSet;
+typedef std::unordered_set<std::string> StringSet;
 typedef std::vector<std::unique_ptr<CarSale>> CarSaleDataVector;
 typedef std::tuple<std::string, std::string, int> MakeCountryYearTuple;  // Make, Country, Year
 typedef std::pair<std::string, int> MakeYearRevenuePair; // Make, Yearly Revenue
@@ -67,17 +69,17 @@ protected:
 	std::string m_fileName;
 	FileType m_fileType;
 	size_t m_lineCount = 0;
-	std::unique_ptr <CarSaleDataVector> m_carSaleData;
-	std::unique_ptr <MakeCountryYearTupleMap> m_makeCountryYearSalesCount;
+	std::unique_ptr<CarSaleDataVector> m_carSaleData;
+	std::unique_ptr<MakeCountryYearTupleMap> m_makeCountryYearSalesCount;
 	std::unique_ptr<MakeYearRevenuePairMap>	m_makeYearRevenue;
 	std::unique_ptr<MakeRegionPairMap> m_makeRegionCount;
 	std::unique_ptr<MakeCountryPairMap> m_makeCountryCount;
 
-	std::unique_ptr<std::set<int>> m_uniqueYears;
-	std::unique_ptr<std::unordered_set<std::string>> m_uniqueCountries;
-	std::unique_ptr<std::unordered_set<std::string>> m_uniqueRegions;
-	std::unique_ptr<std::unordered_set<std::string>> m_uniqueMakes;	
-	std::unique_ptr<std::unordered_set<std::string>> m_uniqueModels;
+	std::unique_ptr<IntSet> m_uniqueYears;
+	std::unique_ptr<StringSet> m_uniqueCountries;
+	std::unique_ptr<StringSet> m_uniqueRegions;
+	std::unique_ptr<StringSet> m_uniqueMakes;
+	std::unique_ptr<StringSet> m_uniqueModels;
 
 	virtual void countLines() = 0;
 	virtual void GenerateDataMaps(const std::unique_ptr<CarSale>& sale) = 0;

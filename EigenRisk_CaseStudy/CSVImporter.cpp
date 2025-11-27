@@ -18,11 +18,11 @@ CSVImporter::CSVImporter(const std::string& fileName) :
     m_makeRegionCount = std::make_unique<MakeRegionPairMap>();
     m_makeYearRevenue = std::make_unique<MakeYearRevenuePairMap>();
 
-    m_uniqueYears = std::make_unique<std::set<int>>();
-    m_uniqueCountries = std::make_unique<std::unordered_set<std::string>>();
-    m_uniqueRegions = std::make_unique<std::unordered_set<std::string>>();
-    m_uniqueMakes = std::make_unique<std::unordered_set<std::string>>();
-    m_uniqueMakes = std::make_unique<std::unordered_set<std::string>>();
+    m_uniqueYears = std::make_unique<IntSet>();
+    m_uniqueCountries = std::make_unique<StringSet>();
+    m_uniqueRegions = std::make_unique<StringSet>();
+    m_uniqueMakes = std::make_unique<StringSet>();
+    m_uniqueMakes = std::make_unique<StringSet>();
 
 
     // Reserve space in vectors, sets and maps
