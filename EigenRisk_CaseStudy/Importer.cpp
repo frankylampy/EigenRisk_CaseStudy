@@ -7,7 +7,7 @@ int64_t Importer::ProcessMakeCountryYearQuery(const std::string& make, const std
 	ValidateYear(year);
 
 	// Lookup in the map
-	MakeCountryYearTuple key = std::make_tuple(make, country, year);
+	StringStringIntTuple key = std::make_tuple(make, country, year);
 	auto it = m_makeCountryYearSalesCount->find(key);
 	if (it != m_makeCountryYearSalesCount->end()) {
 		return it->second;
@@ -22,7 +22,7 @@ long Importer::ProcessMakeYearRevenueQuery(const std::string& make, int year) co
 	ValidateYear(year);
 
 	// Lookup in the map
-	MakeYearRevenuePair key = std::make_pair(make, year);
+	StringIntPair key = std::make_pair(make, year);
 	auto it = m_makeYearRevenue->find(key);
 	if (it != m_makeYearRevenue->end()) {
 		return static_cast<long>(it->second);
@@ -38,7 +38,7 @@ int64_t Importer::ProcessMakeRegionYearQuery(const std::string& make, const std:
 	ValidateYear(year);
 
 	// Lookup in the map
-	MakeRegionPair key = std::make_pair(make, region);
+	StringStringPair key = std::make_pair(make, region);
 	auto it = m_makeRegionCount->find(key);
 	if (it != m_makeRegionCount->end()) {
 		return it->second;

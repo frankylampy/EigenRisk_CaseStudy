@@ -15,18 +15,17 @@
 
 typedef std::set<int> IntSet;
 typedef std::unordered_set<std::string> StringSet;
-typedef std::vector<std::unique_ptr<CarSale>> CarSaleDataVector;
-typedef std::tuple<std::string, std::string, int> MakeCountryYearTuple;  // Make, Country, Year
-typedef std::pair<std::string, int> MakeYearRevenuePair; // Make, Yearly Revenue
-typedef std::pair<std::string, std::string> MakeRegionPair; // Make, Region
-typedef std::pair<std::string, std::string> MakeCountryPair; // Make, Country
+typedef std::tuple<std::string, std::string, int> StringStringIntTuple;  // Make, Country, Year
+typedef std::pair<std::string, int> StringIntPair; // Make, Yearly Revenue
+typedef std::pair<std::string, std::string> StringStringPair; // Make, Region
+typedef std::unordered_map<StringStringIntTuple, int, TupleHash<std::string, std::string, int>> StringStringIntTupleIntMap;
+typedef std::unordered_map<StringIntPair, double, PairHash<std::string, double>> StringIntPairDoubleMap;
+typedef std::unordered_map<StringStringPair, int, PairHash<std::string, std::string>> StringStringPairIntMap;
 //typedef std::pair<std::string, double> CountryRevenuePair; // Country, Revenue
 //typedef std::pair<std::string, CountryRevenuePair> RegionCountryRevenuePair; // Make, Country
-typedef std::unordered_map<MakeCountryYearTuple, int, TupleHash<std::string, std::string, int>> MakeCountryYearTupleMap;
-typedef std::unordered_map<MakeYearRevenuePair, double, PairHash<std::string, double>> MakeYearRevenuePairMap;
-typedef std::unordered_map<MakeRegionPair, int, PairHash<std::string, std::string>> MakeRegionPairMap;
-typedef std::unordered_map<MakeCountryPair, int, PairHash<std::string, std::string>> MakeCountryPairMap;
 //typedef std::unordered_map<RegionCountryRevenuePair, std::unordered_map<>> MakeCountryPairMap;
+
+typedef std::vector<std::unique_ptr<CarSale>> CarSaleVector;
 
 typedef enum {
 	LOG_FILE,
@@ -54,32 +53,33 @@ public:
 	virtual void readFile() = 0;
 	virtual void fetchData() = 0;
 
-	int64_t ProcessMakeCountryYearQuery(const std::string& make, const std::string& country, int year) const;
-	long ProcessMakeYearRevenueQuery(const std::string& make, int year) const;
-	int64_t ProcessMakeRegionYearQuery(const std::string& make, const std::string& region, int year) const;
+	int64_t ProcessMakeCountryYearQuery(const std::string& make, const std::string& country, int year) const; // Returns Make-Country-Year sales count
+	long ProcessMakeYearRevenueQuery(const std::string& make, int year) const; // Returns revenue
+	int64_t ProcessMakeRegionYearQuery(const std::string& make, const std::string& region, int year) const; // Returns Make-Region-Year sales count
 
 private:
-	void ValidateMake(const std::string& make) const;
-	void ValidateCountry(const std::string& country) const;
-	void ValidateYear(const int& year) const;
-	void ValidateRegion(const std::string& region) const;
-	void ValidateModel(const std::string& Make) const;
+	void ValidateMake(const std::string& make) const; // Validates if the make exists in the dataset
+	void ValidateCountry(const std::string& country) const; // Validates if the country exists in the dataset
+	void ValidateYear(const int& year) const; // Validates if the year exists in the dataset
+	void ValidateRegion(const std::string& region) const;	// Validates if the region exists in the dataset
+	void ValidateModel(const std::string& Make) const; // Validates if the model exists in the dataset
 
 protected:
 	std::string m_fileName;
 	FileType m_fileType;
 	size_t m_lineCount = 0;
-	std::unique_ptr<CarSaleDataVector> m_carSaleData;
-	std::unique_ptr<MakeCountryYearTupleMap> m_makeCountryYearSalesCount;
-	std::unique_ptr<MakeYearRevenuePairMap>	m_makeYearRevenue;
-	std::unique_ptr<MakeRegionPairMap> m_makeRegionCount;
-	std::unique_ptr<MakeCountryPairMap> m_makeCountryCount;
+	std::unique_ptr<CarSaleVector> m_carSaleData; // Vector all CarSale data
 
-	std::unique_ptr<IntSet> m_uniqueYears;
-	std::unique_ptr<StringSet> m_uniqueCountries;
-	std::unique_ptr<StringSet> m_uniqueRegions;
-	std::unique_ptr<StringSet> m_uniqueMakes;
-	std::unique_ptr<StringSet> m_uniqueModels;
+	std::unique_ptr<StringStringIntTupleIntMap> m_makeCountryYearSalesCount; // Make, Country, Year -> Sales Count
+	std::unique_ptr<StringIntPairDoubleMap>	m_makeYearRevenue; 		 // Make, Year -> Revenue
+	std::unique_ptr<StringStringPairIntMap> m_makeRegionCount;		 // Make, Region -> Sales Count
+	std::unique_ptr<StringStringPairIntMap> m_makeCountryCount;		 // Make, Country -> Sales Count
+
+	std::unique_ptr<IntSet> m_uniqueYears;	// Unique years in data
+	std::unique_ptr<StringSet> m_uniqueCountries; // Unique years in data
+	std::unique_ptr<StringSet> m_uniqueRegions; // Unique regions in data
+	std::unique_ptr<StringSet> m_uniqueMakes;	// Unique makes in data
+	std::unique_ptr<StringSet> m_uniqueModels; // Unique models in data
 
 	virtual void countLines() = 0;
 	virtual void GenerateDataMaps(const std::unique_ptr<CarSale>& sale) = 0;

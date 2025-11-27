@@ -12,11 +12,11 @@ CSVImporter::CSVImporter(const std::string& fileName) :
     Importer(fileName, FileType::CSV_FILE)
 {
     //countLines();
-    m_carSaleData = std::make_unique<CarSaleDataVector>();
-    m_makeCountryYearSalesCount = std::make_unique<MakeCountryYearTupleMap>();
-    m_makeCountryCount = std::make_unique<MakeCountryPairMap>();
-    m_makeRegionCount = std::make_unique<MakeRegionPairMap>();
-    m_makeYearRevenue = std::make_unique<MakeYearRevenuePairMap>();
+    m_carSaleData = std::make_unique<CarSaleVector>();
+    m_makeCountryYearSalesCount = std::make_unique<StringStringIntTupleIntMap>();
+    m_makeCountryCount = std::make_unique<StringStringPairIntMap>();
+    m_makeRegionCount = std::make_unique<StringStringPairIntMap>();
+    m_makeYearRevenue = std::make_unique<StringIntPairDoubleMap>();
 
     m_uniqueYears = std::make_unique<IntSet>();
     m_uniqueCountries = std::make_unique<StringSet>();
@@ -112,18 +112,18 @@ void CSVImporter::fetchData()
 }
 
 void CSVImporter::GenerateDataMaps(const std::unique_ptr<CarSale>& sale) {
-    MakeCountryYearTuple MakeCountryYearKey = std::make_tuple(
+    StringStringIntTuple MakeCountryYearKey = std::make_tuple(
         sale->manufacturer, sale->country, static_cast<int>(sale->sale_date.year()));
     incrementCounter(m_makeCountryYearSalesCount.get(), MakeCountryYearKey);
 
-    MakeYearRevenuePair makeYearRevenueKey = std::make_pair(
+    StringIntPair makeYearRevenueKey = std::make_pair(
         sale->manufacturer, sale->vehicle_year);
     incrementCounter(m_makeYearRevenue.get(), makeYearRevenueKey, sale->sale_price_usd);
 
-    MakeRegionPair MakeRegionKey = std::make_pair(sale->manufacturer, sale->region);
+    StringStringPair MakeRegionKey = std::make_pair(sale->manufacturer, sale->region);
     incrementCounter(m_makeRegionCount.get(), MakeRegionKey);
 
-    MakeCountryPair MakeCountryKey = std::make_pair(sale->manufacturer, sale->country);
+    StringStringPair MakeCountryKey = std::make_pair(sale->manufacturer, sale->country);
     incrementCounter(m_makeCountryCount.get(), MakeCountryKey);
 
     m_uniqueYears->insert(static_cast<int>(sale->sale_date.year()));

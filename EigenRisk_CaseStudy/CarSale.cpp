@@ -82,11 +82,11 @@ std::unique_ptr<CarSale> parseCarSale(const std::string& line) {
        
         ++index;
     }
-	/*MakeCountryYearTuple MakeCountryYearKey = std::make_tuple(
+	/*StringStringIntTuple MakeCountryYearKey = std::make_tuple(
 		sale->Make, sale->country, sale->vehicle_year);
 	MakeYearRevenueTuple makeYearRevenueKey = std::make_tuple(
 		sale->Make, sale->vehicle_year, sale->sale_price_usd);
-	MakeRegionPair MakeRegionKey = std::make_pair(sale->Make, sale->region);
+	StringStringPair MakeRegionKey = std::make_pair(sale->Make, sale->region);
 	MakeCountryPair MakeCountryKey = std::make_pair(sale->Make, sale->region);*/
 
     return std::move(sale);
