@@ -91,7 +91,7 @@ void incrementCounter(Map* map, const Key& key, const Value& amount)
 }
 
 template<typename Map>
-auto sortMapByValue(const Map& m, const bool desc = false) {
+auto sortMapByValue(const Map& m, const bool desc = true) {
     using K = typename Map::key_type;
     using V = typename Map::mapped_type;
 

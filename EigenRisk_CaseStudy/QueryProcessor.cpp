@@ -40,8 +40,8 @@ static QueryType chooseQuery() {
 	std::cout << "\nChoose a query to execute:\n";
 	std::cout << "\t0: Exit\n";
 	std::cout << "\t1: Manufacturer-Country-Year Sales\n";
-	std::cout << "\t2: Manufacturer-Region-Year Revenue\n";
-	std::cout << "\t3: Manufacturer-Year Revenue\n";
+	std::cout << "\t2: Manufacturer-Year Revenue\n";
+	std::cout << "\t3: Manufacturer-Region-Year Revenue\n";
 
 	int choice = -1;
 	int InvalidInputCount = 1;
@@ -81,11 +81,11 @@ void QueryProcessor::Run(const Importer* importer)
             ProcessMakeCountryYearQuery(importer);
             break;
 
-		case QueryType::MakeRegionYearRevenue:
-            ProcessMakeRevenueYearQuery(importer);
+		case QueryType::MakeYearRevenue:
+            ProcessMakeYearRevenueQuery(importer);
             break;
 
-		case QueryType::MakeRegionYearSales:
+		case QueryType::MakeRegionYearRevenue:
             ProcessMakeRegionRevenueYearQuery(importer);
             break;
 
@@ -118,7 +118,7 @@ void QueryProcessor::ProcessMakeCountryYearQuery(const Importer* importer)
 	printf("\nNumber of cars sold by %s in %s in the year %d: %lld\n", make.c_str(), country.c_str(), year, count);
 }
 
-void QueryProcessor::ProcessMakeRevenueYearQuery(const Importer* importer)
+void QueryProcessor::ProcessMakeYearRevenueQuery(const Importer* importer)
 {
 	std::string make;
 	int year(0);
