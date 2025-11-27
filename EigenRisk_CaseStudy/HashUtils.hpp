@@ -90,6 +90,35 @@ void incrementCounter(Map* map, const Key& key, const Value& amount)
     }
 }
 
+template<
+	typename OuterMap,
+	typename Key,
+	typename InnerKey,
+	typename Value
+>
+void addToNestedMap(
+	OuterMap& outerMap,
+	const Key& compositeKey,
+	const InnerKey& innerKey,
+	const Value& amount)
+{
+	auto it = outerMap.find(compositeKey);
+	using InnerMapPtr = typename OuterMap::mapped_type;
+	using InnerMap = std::remove_pointer_t<InnerMapPtr>;
+	if (it == outerMap.end()) {
+		// Allocate new inner map
+		auto newInnerMap = std::make_unique<InnerMap>();
+		incrementCounter(newInnerMap.get(), innerKey, amount);
+
+		// Insert raw pointer and release ownership
+		outerMap.emplace(compositeKey, newInnerMap.release());
+	}
+	else {
+		// Use existing inner map
+		incrementCounter(it->second, innerKey, amount);
+	}
+}
+
 template<typename Map>
 auto sortMapByValue(const Map& m, const bool desc = true) {
     using K = typename Map::key_type;

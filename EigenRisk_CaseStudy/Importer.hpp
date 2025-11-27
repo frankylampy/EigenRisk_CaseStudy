@@ -46,19 +46,24 @@ static const std::unordered_map<std::string, FileType> FileFormatMap = {
 	{"txt", TXT_FILE}
 };
 
+// Base Importer class
 class Importer
 {
 public:
+	// Constructor
 	Importer(const std::string& fileName, const FileType& fType) : 
 		m_fileName(fileName), m_fileType(fType) {
 		m_lineCount = 50000;
 	}
+	// DElete default/copy constructor and assignment operator
 	Importer(const Importer&) = delete;
 	Importer& operator=(const Importer&) = delete;
 	Importer() = delete;
-	virtual ~Importer() = default;
+	// Virtual destructor
+	virtual ~Importer();
+
 	virtual void readFile() = 0;
-	virtual void fetchData() = 0;
+	virtual void fetchData() const = 0 ;
 
 	int64_t ProcessMakeCountryYearQuery(const std::string& make, const std::string& country, int year) const; // Returns Make-Country-Year sales count
 	long ProcessMakeYearRevenueQuery(const std::string& make, int year) const; // Returns revenue
@@ -95,16 +100,15 @@ protected:
 	virtual void GenerateDataMaps(const std::unique_ptr<CarSale>& sale) = 0;
 };
 
+// Derived - CSV Importer class
 class CSVImporter : public Importer
 {
 public: 
 	CSVImporter(const std::string& fileName);
 	~CSVImporter() override = default;
 	virtual void readFile() override;
-	virtual void fetchData() override;
+	virtual void fetchData() const override;
 protected:
 	virtual void countLines() override;
 	virtual void GenerateDataMaps(const std::unique_ptr<CarSale>& sale) override;
-
 };
-

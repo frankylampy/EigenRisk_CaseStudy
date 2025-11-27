@@ -23,8 +23,7 @@ CSVImporter::CSVImporter(const std::string& fileName) :
     m_uniqueCountries = std::make_unique<StringSet>();
     m_uniqueRegions = std::make_unique<StringSet>();
     m_uniqueMakes = std::make_unique<StringSet>();
-    m_uniqueMakes = std::make_unique<StringSet>();
-
+    m_uniqueModels = std::make_unique<StringSet>();    
 
     // Reserve space in vectors, sets and maps
     if (m_lineCount > 0) {
@@ -37,7 +36,7 @@ CSVImporter::CSVImporter(const std::string& fileName) :
         m_uniqueCountries->reserve(m_lineCount);
         m_uniqueRegions->reserve(m_lineCount);
         m_uniqueMakes->reserve(m_lineCount);
-        m_uniqueMakes->reserve(m_lineCount);
+        m_uniqueModels->reserve(m_lineCount);
     }
 }
 
@@ -100,27 +99,27 @@ void CSVImporter::readFile()
 		});
 }
 
-void CSVImporter::fetchData()
+void CSVImporter::fetchData() const
 {
 	// Implementation can be added as needed
-    std::cout << "Total car sales records imported: " << m_carSaleDataVec->size() << std::endl;
-    std::cout << "Vehicle Years From " 
+    std::cout << "\n-------- Basic Data Stats --------\n";
+    std::cout << "\tTotal car sales records found: " << m_carSaleDataVec->size() << std::endl;
+    std::cout << "\tVehicle Years From " 
         << *m_uniqueYears->begin() << " To " 
 		<< *m_uniqueYears->rbegin() << std::endl;
-	std::cout << "Make Types:" << m_uniqueMakes->size() << std::endl;
-    std::cout << "Make:" << m_uniqueMakes->size() << std::endl;
-	std::cout << "Regions:" << m_uniqueRegions->size() << std::endl;
+	std::cout << "\tCar Manufacturers #:" << m_uniqueMakes->size() << std::endl;
+    std::cout << "\tCar Models #:" << m_uniqueModels->size() << std::endl;
+	std::cout << "\tRegions #:" << m_uniqueRegions->size() << std::endl;
+    std::cout << "\n-------- END Basic Data Stats --------\n";
 }
 
 void CSVImporter::GenerateDataMaps(const std::unique_ptr<CarSale>& sale) {
     auto saleYear = static_cast<int>(sale->sale_date.year());
-    StringStringIntTuple makeCountryYearKey = std::make_tuple(
-        sale->manufacturer, sale->country, saleYear);
 
+    StringStringIntTuple makeCountryYearKey = std::make_tuple(sale->manufacturer, sale->country, saleYear);
     incrementCounter(m_makeCountryYearSalesCountMap.get(), makeCountryYearKey);
 
-    StringIntPair makeYearRevenueKey = std::make_pair(
-        sale->manufacturer, saleYear);
+    StringIntPair makeYearRevenueKey = std::make_pair(sale->manufacturer, saleYear);
     incrementCounter(m_makeYearRevenueMap.get(), makeYearRevenueKey, sale->sale_price_usd);
 
     StringStringPair makeRegionKey = std::make_pair(sale->manufacturer, sale->region);
@@ -129,29 +128,15 @@ void CSVImporter::GenerateDataMaps(const std::unique_ptr<CarSale>& sale) {
     StringStringPair makeCountryKey = std::make_pair(sale->manufacturer, sale->country);
     incrementCounter(m_makeCountryCountMap.get(), makeCountryKey);
 
-    StringStringIntTuple makeRegionYearKey = std::make_tuple(
-		sale->manufacturer, sale->region, saleYear);
-    auto it = m_makeRegionYearRevenueMap->find(makeRegionYearKey);
-    if (it == m_makeRegionYearRevenueMap->end()) {
-		auto countryRevenueMap = std::unique_ptr<StringDoubleMap>(new StringDoubleMap());
-		std::string countryKey = sale->country;
-        //countryRevenueMap->emplace(sale->country, sale->sale_price_usd);
-        incrementCounter(countryRevenueMap.get(), countryKey,sale->sale_price_usd);
-		m_makeRegionYearRevenueMap->emplace(makeRegionYearKey, countryRevenueMap.release());
-    }
-    else
-    {
-        incrementCounter(it->second, sale->country, sale->sale_price_usd);
-    }
-
+    StringStringIntTuple makeRegionYearKey = std::make_tuple(sale->manufacturer, sale->region, saleYear);
+    addToNestedMap(*m_makeRegionYearRevenueMap,makeRegionYearKey,sale->country,sale->sale_price_usd);
 	
-    
-
-    m_uniqueYears->insert(static_cast<int>(sale->sale_date.year()));
+    // Populate unique sets for car manufacturer, years, countries, regions, makes, models
+    m_uniqueYears->insert(saleYear);
     m_uniqueCountries->insert(sale->country);
     m_uniqueRegions->insert(sale->region);
     m_uniqueMakes->insert(sale->manufacturer);
-    //m_uniqueMakes->insert(sale->Make);
+    m_uniqueModels->insert(sale->Make);
 }
 
 

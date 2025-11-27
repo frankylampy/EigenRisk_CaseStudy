@@ -37,7 +37,7 @@ static void fetchMakeCountryYear(std::string& make,int& year, std::string* count
 
 static QueryType chooseQuery() {
 
-	std::cout << "\nChoose a query to execute:\n";
+	std::cout << "\nChoose a query (0-3) to execute:\n";
 	std::cout << "\t0: Exit\n";
 	std::cout << "\t1: Manufacturer-Country-Year Sales\n";
 	std::cout << "\t2: Manufacturer-Year Revenue\n";
@@ -56,13 +56,13 @@ static QueryType chooseQuery() {
 		else
 		{
 			if (InvalidInputCount < 3) {
-				std::cout << "Invalid input " << 3 - InvalidInputCount << " attempts remaining\n";
+				std::cout << "\n\tInvalid input " << 3 - InvalidInputCount << " attempts remaining\n";
 				std::cin.clear();                // clear error state
 				std::cin.ignore(10000, '\n');    // flush invalid input
 				InvalidInputCount++;
 			}
 			else {
-				std::cout << "\nToo many invalid attempts. Exiting.\n";
+				std::cout << "\n\tToo many invalid attempts. Exiting.\n";
 				return QueryType::Exit;
 			}
 		}
@@ -75,6 +75,7 @@ void QueryProcessor::Run(const Importer* importer)
 
     while (query != QueryType::Exit)
     {
+		std::cout << "\n-------- QUERY BEGIN --------\n";
         switch (query)
         {
         case QueryType::MakeCountryYearSales:
@@ -97,7 +98,7 @@ void QueryProcessor::Run(const Importer* importer)
         query = chooseQuery();    // continue until Exit
     }
 
-    std::cout << "Exiting...\n";
+    std::cout << "\tExiting...\n";
 }
 
 void QueryProcessor::ProcessMakeCountryYearQuery(const Importer* importer)
@@ -149,6 +150,6 @@ void QueryProcessor::ProcessMakeRegionRevenueYearQuery(const Importer* importer)
 		std::cout << "\n NO DATA FOUND \n";
 		return;
 	}
-	printf("\nRevenue of cars sold by %s in region %s in the year %d is listed below:\n", make.c_str(), region.c_str(), year);
+	printf("\nRevenue of cars sold by %s in %s in the year %d is listed below:\n", make.c_str(), region.c_str(), year);
 	printStringDoublePairVector(regionRevenueData);
 }

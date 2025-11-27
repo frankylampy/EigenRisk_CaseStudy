@@ -58,7 +58,7 @@ void Importer::ValidateModel(const std::string& make) const {
 			return;
 		}
 	}
-	throw std::runtime_error("Invalid Make."); // Country not found
+	throw std::runtime_error("Invalid Manufacturer."); // Country not found
 }
 void Importer::ValidateCountry(const std::string& country) const {
 	if (m_uniqueCountries && !m_uniqueCountries->empty()) {
@@ -76,7 +76,7 @@ void Importer::ValidateYear(const int& year) const {
 			return;
 		}
 	}
-	throw std::runtime_error("Invalid Make."); // Country not found
+	throw std::runtime_error("Invalid Year."); // Country not found
 }
 
 void Importer::ValidateMake(const std::string& Make) const
@@ -87,7 +87,7 @@ void Importer::ValidateMake(const std::string& Make) const
 			return;
 		}
 	}
-	throw std::runtime_error("Invalid Make."); // Country not found
+	throw std::runtime_error("Invalid Manufacturer."); // Country not found
 }
 
 void Importer::ValidateRegion(const std::string& region) const
@@ -101,3 +101,17 @@ void Importer::ValidateRegion(const std::string& region) const
 	throw std::runtime_error("Invalid Region."); // Country not found
 }
 
+Importer::~Importer()
+{
+	if (m_makeRegionYearRevenueMap) {
+		for (auto& entry : *m_makeRegionYearRevenueMap)
+		{
+			auto* innerMapPtr = entry.second;
+			if (innerMapPtr != nullptr)
+			{
+				delete innerMapPtr;   // free the heap allocation
+			}
+		}
+		m_makeRegionYearRevenueMap->clear(); // remove all keys from the parent map
+	}
+}

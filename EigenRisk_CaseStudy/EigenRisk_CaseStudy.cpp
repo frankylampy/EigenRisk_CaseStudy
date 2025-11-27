@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 		QueryProcessor::Run(importer.get());
 	}
 	catch (const std::runtime_error& e) {
-		cerr << "Error: " << e.what() << endl;
+		cerr << "\tERROR: " << e.what() << endl;
 		return 1;
 	}
 
