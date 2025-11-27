@@ -13,7 +13,7 @@ CSVImporter::CSVImporter(const std::string& fileName) :
 {
 	// Count lines in the file to allocate memory to data structures
     countLines();
-    
+	// m_lineCount = 50000; // For testing purpose only, comment this line to use actual line count
     m_carSaleDataVec = std::make_unique<CarSaleVector>();
     m_makeCountryYearSalesCountMap = std::make_unique<StringStringIntTupleIntMap>();
     m_makeCountryCountMap = std::make_unique<StringStringPairIntMap>();
@@ -46,7 +46,7 @@ void CSVImporter::countLines() {
     std::ifstream file(m_fileName);
     m_lineCount = std::count(std::istreambuf_iterator<char>(file),
 		std::istreambuf_iterator<char>(), '\n') - 1; // Subtract 1 for header line
-    std::cout << "Number of lines: " << m_lineCount << std::endl;
+    std::cout << "\tData lines count: " << m_lineCount << std::endl;
 
     /*std::filesystem::path p{ m_fileName };
     auto fSize = std::filesystem::file_size(p);
@@ -66,7 +66,7 @@ void CSVImporter::readFile()
     {
         throw std::runtime_error("Unable to find a valid file.");
     }
-	std::cout << "Opening file: " << m_fileName << std::endl;
+	std::cout << "\tOpening file: " << m_fileName << std::endl;
     std::ifstream file(m_fileName);
     if (!file.is_open())
     {
@@ -105,13 +105,13 @@ void CSVImporter::fetchData() const
 {
 	// Implementation can be added as needed
     std::cout << "\n-------- Basic Data Stats --------\n";
-    std::cout << "\tTotal car sales records found: " << m_carSaleDataVec->size() << std::endl;
+    std::cout << "\n\tTotal car sales records found: " << m_carSaleDataVec->size() << std::endl;
     std::cout << "\tVehicle Years From " 
         << *m_uniqueYears->begin() << " To " 
 		<< *m_uniqueYears->rbegin() << std::endl;
-	std::cout << "\tCar Manufacturers #:" << m_uniqueMakes->size() << std::endl;
-    std::cout << "\tCar Models #:" << m_uniqueModels->size() << std::endl;
-	std::cout << "\tRegions #:" << m_uniqueRegions->size() << std::endl;
+	std::cout << "\tCar Manufacturers #: " << m_uniqueMakes->size() << std::endl;
+    std::cout << "\tCar Models #: " << m_uniqueModels->size() << std::endl;
+	std::cout << "\tRegions #: " << m_uniqueRegions->size() << std::endl;
     std::cout << "\n-------- END Basic Data Stats --------\n";
 }
 

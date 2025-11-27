@@ -26,7 +26,7 @@ bool Import::Validator::ValidateInputArguments(const int argc, char* argv[],std:
 	}
 	else if (ext) {		
 		*ext = getExtension(argv[1]);
-		std::cout << "File extension detected: " << *ext << std::endl;
+		std::cout << "\n\tFile extension detected: " << *ext << std::endl;
 	}
 	return true;
 }
