@@ -37,7 +37,7 @@ static void fetchMakeCountryYear(std::string& make,int& year, std::string* count
 
 static QueryType chooseQuery() {
 
-	std::cout << "\nChoose a query (0-3) to execute:\n";
+	std::cout << "\nChoose a query (0-4) to execute:\n";
 	std::cout << "\t0: Exit\n";
 	std::cout << "\t1: Manufacturer-Country-Year Sales\n";
 	std::cout << "\t2: Manufacturer-Year Revenue\n";
