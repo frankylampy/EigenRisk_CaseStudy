@@ -2,8 +2,8 @@
 
 # Table of Contents
 - [Overview](#overview) 
-- [Project Structure](#project-structure)
-- [Build Instructions](#🛠️-building-the-project-cmake-windows)
+- [Project Structure](#📁project-structure)
+- [Build Instructions](#🛠️-building-the-project)
     - [Requirements](#1-requirements)
     - [Build dir](#2-create-a-build-directory)
     - [Configure CMAKE](#3-configure-cmake)
@@ -23,7 +23,7 @@
 
 ---
 
-### 📁 Project Structure
+### 📁Project Structure
 
     ├── EigenRisk_CaseStudy             # Source Code dir
         └── CMakeLists.txt
@@ -52,7 +52,7 @@
 
 ---
 
-## 🛠️ Building the Project (CMake, Windows)
+## 🛠️ Building the Project
 
 ### 1. Requirements 
     - Visual Studio 2022 or MinGW
