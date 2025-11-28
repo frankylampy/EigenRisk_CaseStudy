@@ -30,7 +30,7 @@ long Importer::ProcessMakeYearRevenueQuery(const std::string& make, int year) co
 	return -1;
 }
 
-int64_t Importer::ProcessMakeRegionRevenueYearQuery(
+int64_t Importer::ProcessMakeRegionYearRevenueQuery(
 	const std::string& make, 
 	const std::string& region, 
 	int year, 
@@ -45,6 +45,27 @@ int64_t Importer::ProcessMakeRegionRevenueYearQuery(
 	StringStringIntTuple key = std::make_tuple(make, region, year);
 	auto it = m_makeRegionYearRevenueMap->find(key);
 	if (it != m_makeRegionYearRevenueMap->end()) {
+		vec = sortMapByValue(*(it->second));
+		return 0;
+	}
+	return -1;
+}
+
+int64_t Importer::ProcessMakeRegionYearSalesQuery(
+	const std::string& make, 
+	const std::string& region, 
+	int year, 
+	StringIntPairVector& vec) const
+{
+	//Validate input query parameters
+	ValidateMake(make);
+	ValidateRegion(region);
+	ValidateYear(year);
+
+	// Lookup in the map
+	StringStringIntTuple key = std::make_tuple(make, region, year);
+	auto it = m_makeRegionYearCountMap->find(key);
+	if (it != m_makeRegionYearCountMap->end()) {
 		vec = sortMapByValue(*(it->second));
 		return 0;
 	}
@@ -113,5 +134,17 @@ Importer::~Importer()
 			}
 		}
 		m_makeRegionYearRevenueMap->clear(); // remove all keys from the parent map
+	}
+
+	if (m_makeRegionYearCountMap) {
+		for (auto& entry : *m_makeRegionYearCountMap)
+		{
+			auto* innerMapPtr = entry.second;
+			if (innerMapPtr != nullptr)
+			{
+				delete innerMapPtr;   // free the heap allocation
+			}
+		}
+		m_makeRegionYearCountMap->clear(); // remove all keys from the parent map
 	}
 }

@@ -19,20 +19,25 @@ typedef std::unordered_set<std::string> StringSet;
 
 // Pair/Tuple Typdefs
 typedef std::tuple<std::string, std::string, int> StringStringIntTuple;  
-typedef std::pair<std::string, int> StringIntPair; 
+typedef std::pair<std::string, int64_t> StringIntPair; 
 typedef std::pair<std::string, double> StringDoublePair;
 typedef std::pair<std::string, std::string> StringStringPair; 
 
 // Map Typdefs
+typedef std::unordered_map<std::string, int64_t> StringIntMap;
 typedef std::unordered_map<std::string, double> StringDoubleMap;
 typedef std::unordered_map<StringStringIntTuple, int, TupleHash<std::string, std::string, int>> StringStringIntTupleIntMap;
-typedef std::unordered_map<StringIntPair, double, PairHash<std::string, double>> StringIntPairDoubleMap;
+typedef std::unordered_map<StringIntPair, double, PairHash<std::string, int64_t>> StringIntPairDoubleMap;
 typedef std::unordered_map<StringStringPair, int, PairHash<std::string, std::string>> StringStringPairIntMap;
-typedef std::unordered_map <StringStringIntTuple, std::unordered_map<std::string, double>*, TupleHash<std::string, std::string, int>> StringStringIntTupleStringDoubleMapPtrMap;
+typedef std::unordered_map <StringStringIntTuple, StringDoubleMap*,
+	TupleHash<std::string, std::string, int>> StringStringIntTupleStringDoubleMapPtrMap;
+typedef std::unordered_map <StringStringIntTuple, StringIntMap*,
+	TupleHash<std::string, std::string, int>> StringStringIntTupleStringIntMapPtrMap;
 
 // Vector Typdefs
 typedef std::vector<std::unique_ptr<CarSale>> CarSaleVector;
 typedef std::vector<StringDoublePair> StringDoublePairVector;
+typedef std::vector<StringIntPair> StringIntPairVector;
 
 typedef enum {
 	LOG_FILE,
@@ -67,8 +72,12 @@ public:
 
 	int64_t ProcessMakeCountryYearQuery(const std::string& make, const std::string& country, int year) const; // Returns Make-Country-Year sales count
 	long ProcessMakeYearRevenueQuery(const std::string& make, int year) const; // Returns revenue
-	int64_t ProcessMakeRegionRevenueYearQuery(const std::string& make, const std::string& region, int year, 
+	int64_t ProcessMakeRegionYearRevenueQuery(const std::string& make, const std::string& region, int year, 
 		StringDoublePairVector& vec) const; // Returns Make-Region-Year sales count by Country
+
+	int64_t ProcessMakeRegionYearSalesQuery(const std::string& make, const std::string& region, int year,
+		StringIntPairVector& vec) const; // Returns Make-Region-Year sales count by Country
+
 
 private:
 	void ValidateMake(const std::string& make) const; // Validates if the make exists in the dataset
@@ -89,6 +98,7 @@ protected:
 	std::unique_ptr<StringStringPairIntMap> m_makeCountryCountMap;		 // Make, Country -> Sales Count
 	std::unique_ptr <StringDoubleMap> m_countryRevenueMap; // Country -> Revenue
 	std::unique_ptr<StringStringIntTupleStringDoubleMapPtrMap> m_makeRegionYearRevenueMap; // Make, Region, Year -> (Conutries -> Revenue Map*)
+	std::unique_ptr<StringStringIntTupleStringIntMapPtrMap> m_makeRegionYearCountMap; // Make, Region, Year -> (Countries -> Sales Count Map*)
 	
 	std::unique_ptr<IntSet> m_uniqueYears;	// Unique years in data
 	std::unique_ptr<StringSet> m_uniqueCountries; // Unique years in data
@@ -104,7 +114,7 @@ protected:
 class CSVImporter : public Importer
 {
 public: 
-	CSVImporter(const std::string& fileName);
+	CSVImporter(const std::string& fileName, bool debug = false);
 	~CSVImporter() override = default;
 	virtual void readFile() override;
 	virtual void fetchData() const override;

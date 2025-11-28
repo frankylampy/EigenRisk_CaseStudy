@@ -8,18 +8,22 @@
 #include <algorithm>
 #include <filesystem>
 
-CSVImporter::CSVImporter(const std::string& fileName) : 
+CSVImporter::CSVImporter(const std::string& fileName, bool debug) : 
     Importer(fileName, FileType::CSV_FILE)
 {
 	// Count lines in the file to allocate memory to data structures
-    countLines();
-	// m_lineCount = 50000; // For testing purpose only, comment this line to use actual line count
+    if(!debug)
+        countLines();
+    else
+	    m_lineCount = 50000; // For debug purpose only, comment this line to use actual line count
+
     m_carSaleDataVec = std::make_unique<CarSaleVector>();
     m_makeCountryYearSalesCountMap = std::make_unique<StringStringIntTupleIntMap>();
     m_makeCountryCountMap = std::make_unique<StringStringPairIntMap>();
     m_makeRegionCountMap = std::make_unique<StringStringPairIntMap>();
     m_makeYearRevenueMap = std::make_unique<StringIntPairDoubleMap>();
 	m_makeRegionYearRevenueMap = std::make_unique<StringStringIntTupleStringDoubleMapPtrMap>();
+    m_makeRegionYearCountMap = std::make_unique<StringStringIntTupleStringIntMapPtrMap>();
 
     m_uniqueYears = std::make_unique<IntSet>();
     m_uniqueCountries = std::make_unique<StringSet>();
@@ -35,6 +39,8 @@ CSVImporter::CSVImporter(const std::string& fileName) :
         m_makeRegionCountMap->reserve(m_lineCount);
         m_makeYearRevenueMap->reserve(m_lineCount);
 		m_makeRegionYearRevenueMap->reserve(m_lineCount);
+        m_makeRegionYearCountMap->reserve(m_lineCount);
+        // Unique sets of car sale Data
         m_uniqueCountries->reserve(m_lineCount);
         m_uniqueRegions->reserve(m_lineCount);
         m_uniqueMakes->reserve(m_lineCount);
@@ -48,6 +54,7 @@ void CSVImporter::countLines() {
 		std::istreambuf_iterator<char>(), '\n') - 1; // Subtract 1 for header line
     std::cout << "\tData lines count: " << m_lineCount << std::endl;
 
+	// TODO: Find an alternative (faster) way to get number of lines
     /*std::filesystem::path p{ m_fileName };
     auto fSize = std::filesystem::file_size(p);
     std::cout << "File size: " << fSize << " bytes" << std::endl;
@@ -132,6 +139,7 @@ void CSVImporter::GenerateDataMaps(const std::unique_ptr<CarSale>& sale) {
 
     StringStringIntTuple makeRegionYearKey = std::make_tuple(sale->manufacturer, sale->region, saleYear);
     addToNestedMap(*m_makeRegionYearRevenueMap,makeRegionYearKey,sale->country,sale->sale_price_usd);
+    addToNestedMap(*m_makeRegionYearCountMap, makeRegionYearKey, sale->country,1);
 	
     // Populate unique sets for car manufacturer, years, countries, regions, makes, models
     m_uniqueYears->insert(saleYear);

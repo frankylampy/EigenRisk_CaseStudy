@@ -61,63 +61,57 @@ struct TupleHash {
 };
 
 template <typename Map, typename Key>
-void incrementCounter(Map* map, const Key& key)
+void incrementCounter(
+    Map* map,
+    const Key& key,
+    const typename Map::mapped_type& amount = typename Map::mapped_type(1))
 {
-    if (map == nullptr)
-        return;
+    static_assert(std::is_arithmetic_v<typename Map::mapped_type>,
+        "incrementCounter requires numeric mapped_type");
+
+    if (!map) return;
 
     auto it = map->find(key);
     if (it != map->end()) {
-        it->second++;            // key exists ? increment
+        it->second += amount;
     }
     else {
-        map->emplace(key, 1);     // key does not exist ? insert with count = 1
+        map->emplace(key, amount);
     }
 }
 
-template <typename Map, typename Key, typename Value>
-void incrementCounter(Map* map, const Key& key, const Value& amount)
-{
-    if (map == nullptr)
-        return;
-
-    auto it = map->find(key);
-    if (it != map->end()) {
-        it->second += amount;      // key exists → add amount
-    }
-    else {
-        map->emplace(key, amount);  // key does not exist → insert with amount
-    }
-}
-
-template<
-	typename OuterMap,
-	typename Key,
-	typename InnerKey,
-	typename Value
->
+template<typename OuterMap, typename Key, typename InnerKey, typename Value>
 void addToNestedMap(
-	OuterMap& outerMap,
-	const Key& compositeKey,
-	const InnerKey& innerKey,
-	const Value& amount)
+    OuterMap& outerMap,
+    const Key& compositeKey,
+    const InnerKey& innerKey,
+    const Value& amount = Value(1))
 {
-	auto it = outerMap.find(compositeKey);
-	using InnerMapPtr = typename OuterMap::mapped_type;
-	using InnerMap = std::remove_pointer_t<InnerMapPtr>;
-	if (it == outerMap.end()) {
-		// Allocate new inner map
-		auto newInnerMap = std::make_unique<InnerMap>();
-		incrementCounter(newInnerMap.get(), innerKey, amount);
+    using InnerMapPtr = typename OuterMap::mapped_type;
+    using InnerMap = std::remove_pointer_t<InnerMapPtr>;
 
-		// Insert raw pointer and release ownership
-		outerMap.emplace(compositeKey, newInnerMap.release());
-	}
-	else {
-		// Use existing inner map
-		incrementCounter(it->second, innerKey, amount);
-	}
+    static_assert(std::is_arithmetic_v<Value>,
+        "Value must be numeric for nested inner maps");
+
+    InnerMap* innerMap = nullptr;
+
+    auto it = outerMap.find(compositeKey);
+    if (it == outerMap.end()) {
+        // Create new inner map
+        auto newInnerMap = std::make_unique<InnerMap>();
+        innerMap = newInnerMap.get();
+
+        // Insert pointer and release ownership
+        outerMap.emplace(compositeKey, newInnerMap.release());
+    }
+    else {
+        innerMap = it->second;
+    }
+
+    // Increment inside the inner numeric map
+    incrementCounter(innerMap, innerKey, amount);
 }
+
 
 template<typename Map>
 auto sortMapByValue(const Map& m, const bool desc = true) {

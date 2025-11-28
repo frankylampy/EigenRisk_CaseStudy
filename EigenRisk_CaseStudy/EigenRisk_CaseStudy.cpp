@@ -14,7 +14,8 @@ static std::unique_ptr<Importer> createImporter(const std::string& fName, const 
 	std::unique_ptr<Importer> importerObj;
 	if (FileFormatMap.at(fExtension) == FileType::CSV_FILE)
 	{
-		importerObj = std::make_unique<CSVImporter>(fName);
+		bool DEBUG = true;
+		importerObj = std::make_unique<CSVImporter>(fName, DEBUG);
 	}
 	else if (FileFormatMap.at(fExtension) == FileType::TXT_FILE)
 	{
