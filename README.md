@@ -44,27 +44,52 @@ README.md
 
 ---
 
-## 🛠️ Building the Project (CMake)
+## 🛠️ Building the Project (CMake, Windows)
 
-### 1. Create a build directory
+### 1. Requirements 
+- Visual Studio 2022 or MinGW
+- CMAKE (version 3.8 or higher)
+### 2. Create a build directory
 
-- bash, cd to to project directory
-- mkdir build
-- cd build
+- open terminal
+- cd to to project directory
+- mkdir build && cd build
 
-### 2. Configure cmake
-- cmake .. -G "Visual Studio 17 2022"
-- cmake .. -G "MinGW Makefiles"
+### 3. Configure cmake
+cmake .. -G "Visual Studio 17 2022"
 
+**OR**
 
-### 3. Build with cmake
-
-- cmake --build . --config Debug
-- cmake --build . --config Release
+cmake .. -G "MinGW Makefiles"
 
 
+### 4. Build with cmake
 
-### Class Diagram
+cmake --build . --config Debug
+
+**OR**
+
+cmake --build . --config Release
+
+**OR**
+
+Download pre-built Binaries** from binaries/prebuild/*
+
+## Application Exe
+**EigenRisk_CaseStudy.exe** - Once build is complete Debug/Release folder should have
+
+## Run the application
+
+### Options
+InputFile.csv   **Input CSV File**
+
+-d, --debug, DEBUG=1 (optional) Enable **Debug mode**
+
+--help, -h 
+**Show help and usage information**.
+
+## Class Diagrams
+### UML Diagrams
 ![Class Diagram](docs/UML_ClassDiagrams.png)
 
 ### Sequence Diagram
