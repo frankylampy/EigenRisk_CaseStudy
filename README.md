@@ -8,7 +8,7 @@
 - **Run queries** - Follow instructions on the prompt window
     - Responses (email questions) captured in [TaskLog](docs/taskLog.txt)
 ### Sample Output
-![Sequence Diagram](docs/SampleOutput.png)
+![](docs/SampleOutput.png)
 
 
 # Table of Contents
