@@ -1,6 +1,20 @@
 # Case Study — Car Sales Data Importer \& Query Processor
 
+# Table of Contents
+- [Overview](#overview) 
+- [Project Structure](#project-structure)
+- [Build Instructions](#🛠️-building-the-project-cmake-windows)
+    - [Requirements](#1-requirements)
+    - [Build dir](#2-create-a-build-directory)
+    - [Configure CMAKE](#3-configure-cmake)
+    - [Build or Download](#4-build-with-cmake)
+- [Application.exe](#application-exe)
 
+- [Run application](#run-the-application)
+    - [Run Options](#options)
+- [Class Diagrams](#class-diagrams)
+
+## Overview
 **This project is a C++20 application that loads a large global car-sales dataset (CSV format) and allows the user to query information such as:**
 
 \- Number of cars sold by a specific model/brand in a given country and year  
@@ -15,31 +29,28 @@
 
 ### 📁 Project Structure
 
-├── CMakeLists.txt
+    ├── CMakeLists.txt
 
-├── EigenRisk\_CaseStudy.cpp # main entry point
+    ├── EigenRisk\_CaseStudy.cpp # main entry point
 
-├── Importer.cpp / .hpp # Abstract Base class for importing
+    ├── Importer.cpp / .hpp # Abstract Base class for importing
 
-├── CSVImporter.cpp / .hpp # CSV-specific import logic
+    ├── CSVImporter.cpp / .hpp # CSV-specific import logic
 
-├── Validator.cpp / .hpp # validates input CSV file 
+    ├── Validator.cpp / .hpp # validates input CSV file 
 
-├── CarSale.cpp / .hpp # data model representing each record
+    ├── CarSale.cpp / .hpp # data model representing each record
 
-├── QueryProcessor.cpp / .hpp # processes sales \& revenue queries
+    ├── QueryProcessor.cpp / .hpp # processes sales \& revenue queries
 
-├── HashUtils.hpp # helpers for unordered\_map keys
+    ├── HashUtils.hpp # helpers for unordered\_map keys
+    
+    └──/docs
 
-└── data/
-
-└── world\_car\_sales\_1m.csv # input dataset (not committed to GitHub)
-
-/docs
-
-   ├── class_diagram.png
-
-   └── sequence_diagram.png
+        ├── UML_ClassDiagrams.png        
+        └── ParseCSV_SeqDiag.png
+        └── QueryProcessor_SeqDiag.png
+        
 README.md
 
 ---
@@ -75,13 +86,13 @@ cmake --build . --config Release
 
 Download pre-built Binaries** from binaries/prebuild/*
 
-## Application Exe
+### Application Exe
 **EigenRisk_CaseStudy.exe** - Once build is complete Debug/Release folder should have
 
 ## Run the application
-
+- **cd** to EigenRisk_CaseStudy.exe location on your drive
 ### Options
-InputFile.csv   **Input CSV File**
+InputFile.csv   **Input CSV File** (full/relative path)
 
 -d, --debug, DEBUG=1 (optional) Enable **Debug mode**
 
