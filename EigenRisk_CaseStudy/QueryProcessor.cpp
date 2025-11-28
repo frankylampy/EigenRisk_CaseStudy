@@ -48,7 +48,7 @@ static QueryType chooseQuery() {
 	int InvalidInputCount = 1;
 	while (true)
 	{
-		std::cout << "\nEnter your choice (0-3): ";
+		std::cout << "\nEnter your choice (0-4): ";
 
 		if (std::cin >> choice && choice >= 0 && choice <= 4)
 		{
