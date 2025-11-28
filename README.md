@@ -39,14 +39,14 @@
 ### 📁Project Structure
 
     ├── EigenRisk_CaseStudy             # Source Code dir
-        └── CMakeLists.txt
+        └── CMakeLists.txt              # CMAKE config file
         └── EigenRisk_CaseStudy.cpp     # main entry point
         └── Importer.cpp/.hpp           # Abstract Base class for importing
-        └── CSVImporter.cpp/            # CSV-specific import logic
-        └── Validator.cpp/.hpp          # validates input CSV file 
-        └── CarSale.cpp/.hpp            # data model representing each car record
-        └── QueryProcessor.cpp/.hpp     # processes sales & revenue queries
-        └── HashUtils.hpp               # template hash function for map keys
+        └── CSVImporter.cpp/            # CSV format specific import logic
+        └── Validator.cpp/.hpp          # Validates input CSV file 
+        └── CarSale.cpp/.hpp            # Data Model representing each car sale record
+        └── QueryProcessor.cpp/.hpp     # Process sales & revenue queries
+        └── HashUtils.hpp               # Template hash/append function for map keys
 
     ├── docs                            # Doc dir
         └── UML_ClassDiagrams.png
