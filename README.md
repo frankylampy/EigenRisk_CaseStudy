@@ -128,8 +128,11 @@
 #### Query Processor
 ![Sequence Diagram](docs/QueryProcessor_SeqDiag.png)
 
-## ---TODO---
-### Add Unit Tests
+## Unit Tests (TODO)
 - Unit tests to validate the functional code.
+
+## Enhancements (TODO)
 ### Add Custom Query 
 - Accept any custom user query (like SQL).
+### Add Unit Tests
+- Add support for other file formats (.txt, .log,, .xls etc.)
