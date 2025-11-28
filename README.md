@@ -1,9 +1,11 @@
 # Case Study — Car Sales Data Importer \& Query Processor
 
 # BLOT
-- Run command (on cmd/powershell):
+- **Build** with CMAKE and VisualStudio 2022 **OR** MinGW (Windows)
+    -   OR **download pre-built binaries** in binaries/win64/*
+- **Run** command (on cmd/powershell):
     - EigenRisk_CaseStudy.exe "C:\$user\data\file.csv"
-- Run queries by following instructions on the prompt window
+- **Run queries** - Follow instructions on the prompt window
 
 # Table of Contents
 - [Overview](#overview) 
@@ -110,7 +112,10 @@
     EigenRisk_CaseStudy.exe -h
 
 ### Run queries
-    - Follow instructions on the prompt window
+    - Follow instructions on the prompt window to run pre-defined queries
+    - Make sure to follow the specific format as mentioned in the prompt
+
+
 ## Diagrams
 
 ### UML Diagrams
@@ -122,3 +127,9 @@
 
 #### Query Processor
 ![Sequence Diagram](docs/QueryProcessor_SeqDiag.png)
+
+## ---TODO---
+### Add Unit Tests
+- Unit tests to validate the functional code.
+### Add Custom Query 
+- Accept any custom user query (like SQL).
