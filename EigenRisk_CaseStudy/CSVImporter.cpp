@@ -16,6 +16,7 @@ CSVImporter::CSVImporter(const std::string& fileName, bool debug) :
         countLines();
     else
 	    m_lineCount = 50000; // For debug purpose only, comment this line to use actual line count
+    std::cout << "\tData lines count: " << m_lineCount << std::endl;
 
     m_carSaleDataVec = std::make_unique<CarSaleVector>();
     m_makeCountryYearSalesCountMap = std::make_unique<StringStringIntTupleIntMap>();
@@ -52,7 +53,6 @@ void CSVImporter::countLines() {
     std::ifstream file(m_fileName);
     m_lineCount = std::count(std::istreambuf_iterator<char>(file),
 		std::istreambuf_iterator<char>(), '\n') - 1; // Subtract 1 for header line
-    std::cout << "\tData lines count: " << m_lineCount << std::endl;
 
 	// TODO: Find an alternative (faster) way to get number of lines
     /*std::filesystem::path p{ m_fileName };

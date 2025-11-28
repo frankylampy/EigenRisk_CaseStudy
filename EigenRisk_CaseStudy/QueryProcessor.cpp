@@ -155,8 +155,8 @@ void QueryProcessor::ProcessMakeRegionYearRevenueQuery(const Importer* importer)
 		std::cout << "\n NO DATA FOUND \n";
 		return;
 	}
-	printf("\nRevenue of cars sold by %s in %s in the year %d is listed below:\n", make.c_str(), region.c_str(), year);
-	printStringDoublePairVector(regionRevenueData);
+	printf("\nRevenue of cars sold by %s in %s in the year %d is listed below (USD):\n", make.c_str(), region.c_str(), year);
+	printStringDoublePairVector(regionRevenueData,true);
 }
 
 void QueryProcessor::ProcessMakeRegionYearSalesQuery(const Importer* importer)
@@ -166,13 +166,13 @@ void QueryProcessor::ProcessMakeRegionYearSalesQuery(const Importer* importer)
 	int year(0);
 	std::cout << "\nEnter Manufacturer,Region,Year to sales data (# of Cars) sorted by countries (e.g. Audi,Asia,2025): ";
 	fetchMakeCountryYear(make, year, &region);
-	StringIntPairVector regionRevenueData;
-	int64_t count = importer->ProcessMakeRegionYearSalesQuery(make, region, year, regionRevenueData);
+	StringIntPairVector regionSalesData;
+	int64_t count = importer->ProcessMakeRegionYearSalesQuery(make, region, year, regionSalesData);
 	if (count < 0) {
 		//Query did not return valid data
 		std::cout << "\n NO DATA FOUND \n";
 		return;
 	}
 	printf("\n# of Cars sold by %s in %s in the year %d is listed below:\n", make.c_str(), region.c_str(), year);
-	printStringDoublePairVector(regionRevenueData);
+	printStringDoublePairVector(regionSalesData);
 }

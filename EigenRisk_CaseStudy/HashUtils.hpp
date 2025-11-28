@@ -128,10 +128,11 @@ auto sortMapByValue(const Map& m, const bool desc = true) {
 }
 
 template<typename PairVec>
-void printStringDoublePairVector(const PairVec& vec)
+void printStringDoublePairVector(const PairVec& vec, const bool rev = false)
 {
     for (const auto& [str, val] : vec) {
-        std::cout << str << " : $ " << val << "\n";
+		auto displayVal = rev ? ": $"  : ": ";
+        std::cout<<"\t" << str << displayVal << val << "\n";
     }
     std::cout << std::endl;
 }

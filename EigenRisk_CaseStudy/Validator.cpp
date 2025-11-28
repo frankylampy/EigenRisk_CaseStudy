@@ -14,7 +14,7 @@ static std::string getExtension(const std::string& fName) {
 
 bool Import::Validator::ValidateInputArguments(const int argc, char* argv[],std::string* ext)
 {
-	if (argc != 2) {
+	if (argc < 2) {
 		throw std::invalid_argument("Insufficient arguments provided. Please provide an input file.");
 	}
 	else if (!ValidateFileType(argv[1]))
@@ -28,7 +28,16 @@ bool Import::Validator::ValidateInputArguments(const int argc, char* argv[],std:
 		*ext = getExtension(argv[1]);
 		std::cout << "\n\tFile extension detected: " << *ext << std::endl;
 	}
-	return true;
+	
+	if (argc > 2)
+	{
+		// DEBUG mode
+		std::string arg(argv[2]);
+		if (arg == "DEBUG=1" || arg == "--debug" || arg == "-d") {
+			return true;
+		}
+	}
+	return false;
 }
 		
 
