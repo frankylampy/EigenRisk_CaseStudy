@@ -6,6 +6,10 @@
 - **Run** command (on cmd/powershell):
     - EigenRisk_CaseStudy.exe "C:\$user\data\file.csv"
 - **Run queries** - Follow instructions on the prompt window
+    - Responses (email questions) captured in [TaskLog](docs/taskLog.txt)
+### Sample Output
+![Sequence Diagram](docs/SampleOutput.png)
+
 
 # Table of Contents
 - [Overview](#overview) 

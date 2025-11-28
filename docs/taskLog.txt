@@ -1,0 +1,53 @@
+	Debug level = 0
+	Data lines count: 1000000
+	Opening file: D:\Projects\EigenRisk_CaseStudy\data\world_car_sales_1m.csv
+
+-------- Basic Data Stats --------
+
+	Total car sales records found: 1000000
+	Vehicle Years From 2020 To 2025
+	Car Manufacturers #: 22
+	Car Models #: 109
+	Regions #: 6
+
+-------- END Basic Data Stats --------
+
+1. Number of cars sold by Audi in China in the year 2025: 373
+
+2. Revenue (in USD) by BMW in the year 2025: $98688244
+
+3. # of Cars sold by Audi in Europe in the year 2025 is listed below:
+	Sweden: 398
+	Germany: 392
+	Italy: 379
+	Spain: 374
+	United Kingdom: 367
+	France: 365
+	Netherlands: 358
+
+4. # of Cars sold by BMW in Europe in the year 2025 is listed below:
+	Italy: 380
+	United Kingdom: 371
+	France: 370
+	Spain: 369
+	Germany: 367
+	Netherlands: 362
+	Sweden: 353
+
+5. Revenue of cars sold by Audi in Europe in the year 2025 is listed below (USD):
+	Sweden: $1.48871e+06
+	Germany: $1.46774e+06
+	France: $1.46674e+06
+	Italy: $1.39865e+06
+	Spain: $1.39363e+06
+	United Kingdom: $1.38962e+06
+	Netherlands: $1.3442e+06
+
+6. Revenue of cars sold by BMW in Europe in the year 2025 is listed below (USD):
+	Italy: $4.68012e+06
+	France: $4.65939e+06
+	Spain: $4.50931e+06
+	United Kingdom: $4.49774e+06
+	Netherlands: $4.45366e+06
+	Germany: $4.4389e+06
+	Sweden: $4.33664e+06
