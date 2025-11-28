@@ -2,8 +2,8 @@
 
 # Table of Contents
 - [Overview](#overview) 
-- [Project Structure](#📁project-structure)
-- [Build Instructions](#🛠️-building-the-project)
+- [Project Structure](#project-structure)
+- [Build Instructions](#building-the-project)
     - [Requirements](#1-requirements)
     - [Build dir](#2-create-a-build-directory)
     - [Configure CMAKE](#3-configure-cmake)
@@ -52,7 +52,7 @@
 
 ---
 
-## 🛠️ Building the Project
+## 🛠️Building the Project
 
 ### 1. Requirements 
     - Visual Studio 2022 or MinGW
