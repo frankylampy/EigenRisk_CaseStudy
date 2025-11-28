@@ -136,3 +136,5 @@
 - Accept any custom user query input (like SQL).
 #### Support for multiple formats
 - Add support for multiple file formats (.txt, .log,, .xls etc.)
+#### MFC Application
+- Create a MFC app to import, visualize and generate reports from the data.
