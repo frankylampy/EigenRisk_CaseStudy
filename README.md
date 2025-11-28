@@ -1,5 +1,10 @@
 # Case Study — Car Sales Data Importer \& Query Processor
 
+# BLOT
+- Run command (on cmd/powershell):
+    - EigenRisk_CaseStudy.exe "C:\$user\data\file.csv"
+- Run queries by following instructions on the prompt window
+
 # Table of Contents
 - [Overview](#overview) 
 - [Project Structure](#project-structure)
@@ -10,7 +15,9 @@
     - [Build](#4-build-with-cmake)
     - [Application Binary](#5-application-exe)
 - [Run application](#run-the-application)
-    - [Run Options](#options)
+    - [Run Options](#input-options)
+    - [Example](#example)
+    - [Run query](#run-queries)
 - [Class Diagrams](#diagrams)
 
 ## Overview
@@ -87,8 +94,11 @@
         binaries/win64/Release/*
 
 ## Run the application
-    cd to EigenRisk_CaseStudy.exe location on your drive
-### Options
+    - open terminal
+    - cd to EigenRisk_CaseStudy.exe location on your drive
+    - EigenRisk_CaseStudy.exe "file.csv" (Check Example section below)
+
+### Input Options
     InputFile.csv           # Input CSV File (full/relative path)
     -d, --debug, DEBUG=1    # (optional) Enable **Debug mode**
     --help, -h              # show help text
@@ -99,7 +109,8 @@
     EigenRisk_CaseStudy.exe "C:\$user\data\file.csv" DEBUG=1
     EigenRisk_CaseStudy.exe -h
 
-
+### Run queries
+    - Follow instructions on the prompt window
 ## Diagrams
 
 ### UML Diagrams
