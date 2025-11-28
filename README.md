@@ -11,7 +11,7 @@
 - [Application.exe](#5-application-exe)
 - [Run application](#run-the-application)
     - [Run Options](#options)
-- [Class Diagrams](#class-diagrams)
+- [Class Diagrams](#diagrams)
 
 ## Overview
 **This project is a C++20 application that loads a large global car-sales dataset (CSV format) and allows the user to query information such as:**
@@ -44,8 +44,9 @@
         └── win64
             └── Debug
                 └── EigenRisk_CaseStudy.exe
+                └── EigenRisk_CaseStudy.pdb
             └── Release
-                └── EigenRisk_CaseStudy
+                └── EigenRisk_CaseStudy.exe
                 
     ├──README.md
 
@@ -54,20 +55,19 @@
 ## 🛠️ Building the Project (CMake, Windows)
 
 ### 1. Requirements 
-- Visual Studio 2022 or MinGW
-- CMAKE (version 3.8 or higher)
+    - Visual Studio 2022 or MinGW
+    - CMAKE (version 3.8 or higher)
 ### 2. Create a build directory
-
-- open terminal
-- cd to to project directory
-- mkdir build && cd build
+    - open terminal
+    - cd to to project directory
+    - mkdir build && cd build
 
 ### 3. Configure cmake
-cmake .. -G "Visual Studio 17 2022"
+    cmake .. -G "Visual Studio 17 2022"
 
 **OR**
 
-cmake .. -G "MinGW Makefiles"
+    cmake .. -G "MinGW Makefiles"
 
 
 ### 4. Build with cmake
@@ -78,29 +78,30 @@ cmake .. -G "MinGW Makefiles"
 
     cmake --build . --config Release
 
-**OR**
-
-    Download pre-built Binaries** from binaries/win64/*
-
 ### 5. Application Exe
     EigenRisk_CaseStudy.exe - After successful build, should be in Debug/Release folder 
+**OR**
+
+    Use pre-built binaries in 
+        binaries/win64/Debug/*
+        binaries/win64/Release/*
 
 ## Run the application
-    **cd** to EigenRisk_CaseStudy.exe location on your drive
+    cd to EigenRisk_CaseStudy.exe location on your drive
 ### Options
-    InputFile.csv   **Input CSV File** (full/relative path)
-    -d, --debug, DEBUG=1 (optional) Enable **Debug mode**
-    --help, -h 
+    InputFile.csv           # Input CSV File (full/relative path)
+    -d, --debug, DEBUG=1    # (optional) Enable **Debug mode**
+    --help, -h              # show help text
 ### Example:
     EigenRisk_CaseStudy.exe file.csv
-    EigenRisk_CaseStudy.exe file.csv --debug
-    EigenRisk_CaseStudy.exe file.csv DEBUG=1
+    EigenRisk_CaseStudy.exe "C:\$user\data\file.csv"
+    EigenRisk_CaseStudy.exe "C:\$user\data\file.csv" --debug
+    EigenRisk_CaseStudy.exe "C:\$user\data\file.csv" DEBUG=1
     EigenRisk_CaseStudy.exe -h
 
 
-**Show help and usage information**.
+## Diagrams
 
-## Class Diagrams
 ### UML Diagrams
 ![Class Diagram](docs/UML_ClassDiagrams.png)
 
