@@ -16,9 +16,5 @@ add_executable (EigenRisk_CaseStudy "EigenRisk_CaseStudy.cpp" "Importer.cpp" "Va
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET EigenRisk_CaseStudy PROPERTY CXX_STANDARD 20)
 endif()
-set(DATA_FILE "D:/Projects/EigenRisk_CaseStudy/data/world_car_sales_1m.csv")
-set_target_properties(EigenRisk_CaseStudy
-    PROPERTIES
-        VS_DEBUGGER_COMMAND_ARGUMENTS "${DATA_FILE}"
-)
+
 # TODO: Add tests and install targets if needed.
